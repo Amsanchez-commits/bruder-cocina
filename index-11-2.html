@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Bruder Oviedo — Producción v11</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#f8f6f2;--surface:#fff;--surface2:#f1efe9;--surface3:#e8e5de;
+  --border:#ddd9d0;--border2:#ccc8be;--text:#1a1816;--text2:#6b6560;--text3:#9c9890;
+  --amber:#c47d0a;--amber-bg:#fef3dc;--amber-dim:#e8a830;
+  --teal:#0a8a62;--teal-bg:#e0f5ee;--teal-dim:#2db88a;
+  --red:#c42020;--red-bg:#fdeaea;--red-dim:#e06060;
+  --blue:#1a6abf;--blue-bg:#e6f0fb;--blue-dim:#60a8f5;
+  --green:#0a6b3a;--green-bg:#d6f0e3;--green-dim:#2db870;
+  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  --radius:14px;--radius-sm:8px;
+}
+html,body{background:var(--bg);font-family:var(--font);color:var(--text);min-height:100vh}
+.app{max-width:900px;margin:0 auto;padding:16px}
+/* Header */
+.page-header{background:var(--text);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.page-title{font-size:18px;font-weight:600;color:#fef3dc;letter-spacing:.02em}
+.page-sub{font-size:12px;color:rgba(254,243,220,.5);margin-top:2px}
+.lang-toggle{display:flex;border:0.5px solid rgba(255,255,255,.2);border-radius:20px;overflow:hidden}
+.lang-btn{padding:5px 12px;font-size:12px;font-weight:500;font-family:var(--font);background:transparent;border:none;cursor:pointer;color:rgba(255,255,255,.5);transition:all .2s}
+.lang-btn.active{background:var(--amber);color:#fff}
+/* Tabs */
+.tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:8px 18px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);font-size:13px;font-weight:500;color:var(--text2);background:var(--surface);cursor:pointer;font-family:var(--font);transition:all .2s}
+.tab.active{background:var(--amber);border-color:var(--amber);color:#fff}
+/* Cards */
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:12px}
+.card-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.card-sub{font-size:12px;color:var(--text3);margin-bottom:16px}
+/* Sections */
+.section-label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:var(--radius-sm);margin-bottom:10px;display:inline-block}
+.sl-starter{background:var(--teal-bg);color:var(--teal)}
+.sl-entree{background:var(--red-bg);color:var(--red)}
+.sl-burger{background:var(--amber-bg);color:var(--amber)}
+.sl-pizza{background:var(--blue-bg);color:var(--blue)}
+.sl-kids{background:var(--green-bg);color:var(--green)}
+/* Input grid */
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(min-width:600px){.input-grid{grid-template-columns:1fr 1fr 1fr}}
+.input-item{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;border:0.5px solid var(--border)}
+.input-item label{font-size:11px;color:var(--text2);display:block;margin-bottom:4px;line-height:1.3}
+.input-item input{width:100%;border:none;background:transparent;font-family:var(--mono);font-size:14px;font-weight:500;color:var(--text);outline:none;-webkit-appearance:none}
+.input-item input::-webkit-inner-spin-button{-webkit-appearance:none}
+/* Buttons */
+.btn{padding:12px 24px;border-radius:var(--radius-sm);border:none;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--amber);color:#fff}
+.btn-primary:active{transform:scale(.97)}
+.btn-secondary{background:var(--surface2);border:0.5px solid var(--border2);color:var(--text2)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+/* Results */
+.result-section{margin-bottom:20px}
+.result-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.result-dot{width:10px;height:10px;border-radius:50%}
+.result-title{font-size:13px;font-weight:600;color:var(--text)}
+.result-table{width:100%;border-collapse:collapse}
+.result-table th{font-size:11px;font-weight:600;color:var(--text3);text-align:left;padding:6px 10px;border-bottom:1px solid var(--border);letter-spacing:.03em}
+.result-table td{font-size:13px;padding:9px 10px;border-bottom:0.5px solid var(--border);vertical-align:middle}
+.result-table tr:last-child td{border-bottom:none}
+.result-table tr:nth-child(even) td{background:var(--surface2)}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
+.badge-red{background:var(--red-bg);color:var(--red)}
+.badge-teal{background:var(--teal-bg);color:var(--teal)}
+.badge-amber{background:var(--amber-bg);color:var(--amber)}
+.badge-blue{background:var(--blue-bg);color:var(--blue)}
+.qty-val{font-family:var(--mono);font-weight:600;color:var(--text)}
+.cost-val{font-family:var(--mono);color:var(--teal);font-weight:600}
+.urgente{background:var(--red-bg);color:var(--red);font-weight:600}
+.ok{background:var(--green-bg);color:var(--green)}
+/* Summary boxes */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+@media(min-width:600px){.summary-grid{grid-template-columns:repeat(4,1fr)}}
+.summary-box{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center}
+.summary-val{font-size:24px;font-weight:600;font-family:var(--mono)}
+.summary-lbl{font-size:11px;color:var(--text3);margin-top:3px}
+/* Print */
+@media print{.tabs,.btn-row,.lang-toggle{display:none!important}.app{max-width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="page-header">
+  <div>
+    <div class="page-title">🍺 Bruder Oviedo — <span id="h-title">Production Planning</span></div>
+    <div class="page-sub" id="h-sub">v11 · Jun 2025 · Enter projection → calculates production & purchasing</div>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn" onclick="setLang('es',this)">ES</button>
+    <button class="lang-btn active" onclick="setLang('en',this)">EN</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('proyeccion',this)" id="tab-proyeccion">📊 Projection</button>
+  <button class="tab" onclick="showTab('produccion',this)" id="tab-produccion">🍳 Prep</button>
+  <button class="tab" onclick="showTab('compras',this)" id="tab-compras">🛒 Purchases</button>
+  <button class="tab" onclick="showTab('pedido',this)" id="tab-pedido">📦 Cheney Order</button>
+  <button class="tab" onclick="showTab('foodcost',this)" id="tab-foodcost">💰 Food Cost</button>
+  <button class="tab" onclick="showTab('recetas',this)" id="tab-recetas">📋 Batch Recipes</button>
+  <button class="tab" onclick="showTab('bitacora',this)" id="tab-bitacora">📝 Log</button>
+  <button class="tab" onclick="showTab('admin',this)" id="tab-admin" style="background:var(--amber-bg);color:var(--amber);border-color:var(--amber-dim)">🔐 Admin</button>
+</div>
+
+<!-- ══════════ TAB 1: PROYECCIÓN ══════════ -->
+<div id="pane-proyeccion">
+<div class="card">
+  <div class="card-title" id="proj-title">Proyección de Ventas por Semana</div>
+  <div class="card-sub" id="proj-sub">Ingresa el número de platos proyectados para la semana</div>
+
+  <div class="section-label sl-starter" id="lbl-starter">Starters / Entradas</div>
+  <div class="input-grid" id="grid-starters"></div>
+  <br>
+  <div class="section-label sl-entree" id="lbl-entree">Entradas Fuertes / Entrees</div>
+  <div class="input-grid" id="grid-entrees"></div>
+  <br>
+  <div class="section-label sl-burger" id="lbl-burger">Burgers</div>
+  <div class="input-grid" id="grid-burgers"></div>
+  <br>
+  <div class="section-label sl-pizza" id="lbl-pizza">Pizzas</div>
+  <div class="input-grid" id="grid-pizzas"></div>
+  <br>
+  <div class="section-label sl-kids" id="lbl-kids">Kids</div>
+  <div class="input-grid" id="grid-kids"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="calcular()">⚡ <span id="btn-calc">Calcular Producción y Compras</span></button>
+    <button class="btn btn-secondary" onclick="cargarEjemplo()">📋 <span id="btn-example">Cargar proyección ejemplo</span></button>
+    <button class="btn btn-secondary" onclick="limpiar()">↺ <span id="btn-clear">Limpiar</span></button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════ TAB 2: PRODUCCIÓN ══════════ -->
+<div id="pane-produccion" style="display:none">
+
+<!-- PROGRESO SEMANAL — siempre visible si hay bitácora -->
+<div id="pp-progreso" style="display:none;margin-bottom:12px">
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div class="card-title">📊 Progreso de PP — Semana actual</div>
+        <div class="card-sub">Lo que ya se ha producido vs lo proyectado</div>
+      </div>
+      <div id="pp-pct-badge" style="font-size:28px;font-weight:700;font-family:var(--mono);color:var(--teal)">0%</div>
+    </div>
+    <!-- Global progress bar -->
+    <div style="background:var(--surface2);border-radius:20px;height:12px;margin-bottom:16px;overflow:hidden">
+      <div id="pp-bar-global" style="height:100%;border-radius:20px;background:var(--teal);transition:width .5s ease;width:0%"></div>
+    </div>
+    <!-- Per base list -->
+    <div id="pp-lista-producido"></div>
+  </div>
+</div>
+
+<div class="card" id="prod-placeholder">
+  <div style="text-align:center;padding:40px;color:var(--text3)">
+    <div style="font-size:32px;margin-bottom:8px">🍳</div>
+    <div id="prod-ph-text">Ingresa la proyección y presiona "Calcular" para ver los preparados</div>
+  </div>
+</div>
+<div id="prod-results" style="display:none"></div>
+</div>
+
+<!-- ══════════ TAB 3: COMPRAS ══════════ -->
+<div id="pane-compras" style="display:none">
+<div class="card" id="comp-placeholder">
+  <div style="text-align:center;padding:40px;color:var(--text3)">
+    <div style="font-size:32px;margin-bottom:8px">🛒</div>
+    <div id="comp-ph-text">Ingresa la proyección y presiona "Calcular" para ver la lista de compras</div>
+  </div>
+</div>
+<div id="comp-results" style="display:none"></div>
+</div>
+
+<div id="pane-pedido" style="display:none">
+<!-- PEDIDO CHENEY BROTHERS — Inventario General -->
+<div class="card">
+  <div class="card-title">📦 Pedido Cheney Brothers — Inventario General</div>
+  <div class="card-sub">Ingresa el stock actual de cada ítem para generar la orden de pedido. Rep: <strong>Carlos Alarcón · 019139</strong></div>
+
+  <!-- Upload bar for Sistema Inventario -->
+  <div style="background:var(--surface2);border:2px dashed var(--blue-dim);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:16px;cursor:pointer" onclick="document.getElementById('file-cheney').click()" id="drop-cheney">
+    <div style="font-size:11px;font-weight:600;color:var(--blue);margin-bottom:3px">📊 SUBIR Bruder_Sistema_Inventario.xlsx</div>
+    <div style="font-size:12px;color:var(--text2)" id="lbl-cheney">Sube el Excel para cargar stock actual automáticamente</div>
+    <input type="file" id="file-cheney" accept=".csv,.xlsx,.xls" style="display:none" onchange="loadCheneyFile(this)">
+  </div>
+
+  <div id="cheney-content">
+    <!-- Categories will render here -->
+    <div style="text-align:center;padding:30px;color:var(--text3)">
+      <div style="font-size:28px;margin-bottom:8px">📦</div>
+      <div>Sube el Excel de inventario o ingresa el stock manualmente abajo</div>
+    </div>
+  </div>
+
+  <div id="cheney-manual" style="margin-top:16px">
+    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em">Ingreso Manual de Stock</div>
+    <div id="cheney-manual-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <!-- built by buildCheneyManual() -->
+    </div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn btn-primary" onclick="calcularPedido()">📦 Generar Pedido Cheney</button>
+      <button class="btn btn-secondary" onclick="copyPedidoCheney()">📋 Copiar para WhatsApp/Email</button>
+    </div>
+  </div>
+  <div id="cheney-order-results" style="display:none;margin-top:20px"></div>
+</div>
+</div>
+
+<!-- ══════════ TAB FOOD COST ══════════ -->
+<div id="pane-foodcost" style="display:none">
+<div class="card">
+  <div class="card-title">💰 Food Cost por Plato — Análisis de Rentabilidad</div>
+  <div class="card-sub">Costos reales del inventario del Chef · Mayo 2026 · Objetivo food cost &lt; 30%</div>
+
+  <div id="foodcost-table">
+    <!-- Rendered by renderFoodCost() on load -->
+  </div>
+</div>
+</div>
+
+<div id="pane-recetas" style="display:none">
+<div class="card" id="rec-placeholder">
+  <div style="text-align:center;padding:40px;color:var(--text3)">
+    <div style="font-size:32px;margin-bottom:8px">📋</div>
+    <div id="rec-ph-text">Ingresa la proyección y presiona "Calcular" para ver las recetas por lote</div>
+  </div>
+</div>
+<div id="rec-results" style="display:none"></div>
+</div>
+<div id="pane-bitacora" style="display:none">
+<div class="card">
+  <div class="card-title">📝 Bitácora de Producción Diaria</div>
+  <div class="card-sub">Registro de lo que se produjo cada día — se guarda automáticamente</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px">Fecha</label>
+      <input type="date" id="bit-fecha" style="width:100%;padding:8px;border:0.5px solid var(--border2);border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;background:var(--surface);color:var(--text)">
+    </div>
+    <div>
+      <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px">Responsable</label>
+      <input type="text" id="bit-resp" placeholder="Chef / Servicio..." style="width:100%;padding:8px;border:0.5px solid var(--border2);border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;background:var(--surface);color:var(--text)">
+    </div>
+    <div>
+      <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px">Turno</label>
+      <select id="bit-turno" style="width:100%;padding:8px;border:0.5px solid var(--border2);border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;background:var(--surface);color:var(--text)">
+        <option>Apertura</option><option>Tarde</option><option>Noche</option>
+      </select>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px">Base Producida</label>
+      <select id="bit-base" style="width:100%;padding:8px;border:0.5px solid var(--border2);border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;background:var(--surface);color:var(--text)">
+        <option value="">-- Seleccionar base --</option>
+        <option value="aji_criollo">Aji Criollo Sauce</option>
+        <option value="onion_ring_sauce">Salsa Onion Rings</option>
+        <option value="blue_cheese_sauce">Blue Cheese Sauce</option>
+        <option value="aceite_verde">Aceite Verde</option>
+        <option value="hummus_base">Hummus de Arveja</option>
+        <option value="camote_mousse">Sweet Potato Mousse</option>
+        <option value="pico_gallo">Pico de Gallo</option>
+        <option value="barley">Cebada Cocida</option>
+        <option value="croqueta_kale">Croquetas de Kale</option>
+        <option value="alitas_precocidas">Alitas Precocidas</option>
+        <option value="pickled_eggplant">Berenjena Encurtida</option>
+        <option value="pesto_tomato">Pesto Tomate Rostizado</option>
+        <option value="goat_cheese_rounds">Bolitas Queso Cabra</option>
+        <option value="vinagreta">Vinagreta Ensalada</option>
+        <option value="pure_papa">Puré de Papa</option>
+        <option value="demiglace">Demiglace</option>
+        <option value="three_pep_sauce">Salsa 3 Pimientas</option>
+        <option value="red_onion_jam">Mermelada de Cebolla</option>
+        <option value="coleslaw">Coleslaw</option>
+        <option value="aioli_cilantro">Aioli Cilantro y Ajo</option>
+        <option value="basil_mayo">Mayo de Albahaca</option>
+        <option value="pizza_dough">Masa de Pizza</option>
+        <option value="pollo_marinado">Pollo Marinado</option>
+        <option value="chimichurri_mayo">Mayonesa de Chimichurri</option>
+        <option value="chicharron">Pork Belly / Chicharrón</option>
+        <option value="chorizo_colombiano">Chorizo Colombiano</option>
+        <option value="marinated_mushrooms">Champiñones Marinados</option>
+        <option value="crispy_onions">Crispy Onions</option>
+        <option value="pickled_beet">Remolacha Encurtida</option>
+        <option value="guacamole_base">Guacamole</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div>
+        <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px">Cantidad</label>
+        <input type="number" id="bit-qty" min="0" placeholder="0" style="width:100%;padding:8px;border:0.5px solid var(--border2);border-radius:var(--radius-sm);font-family:var(--mono);font-size:14px;background:var(--surface);color:var(--text)">
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px">Unidad</label>
+        <select id="bit-unit" style="width:100%;padding:8px;border:0.5px solid var(--border2);border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;background:var(--surface);color:var(--text)">
+          <option>oz</option><option>porciones</option><option>unidades</option><option>lotes</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:12px">
+    <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px">Notas (opcional)</label>
+    <input type="text" id="bit-notas" placeholder="Ej: lote completo, sin sal, para congelar..." style="width:100%;padding:8px;border:0.5px solid var(--border2);border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;background:var(--surface);color:var(--text)">
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="agregarBitacora()">+ Registrar producción</button>
+    <button class="btn btn-secondary" onclick="limpiarBitacoraForm()">↺ Limpiar</button>
+  </div>
+</div>
+
+<!-- Acumulado semanal -->
+<div class="card" id="bit-acumulado" style="display:none">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+    <div>
+      <div class="card-title">📊 Acumulado Semanal</div>
+      <div class="card-sub" id="bit-semana-label"></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-secondary" onclick="window.print()" style="font-size:12px;padding:6px 12px">⎙ Imprimir</button>
+      <button class="btn btn-secondary" onclick="exportarBitacora()" style="font-size:12px;padding:6px 12px">📋 Copiar</button>
+      <button class="btn btn-secondary" onclick="if(confirm('¿Borrar toda la bitácora de esta semana?'))limpiarBitacora()" style="font-size:12px;padding:6px 12px;color:var(--red)">🗑 Borrar semana</button>
+    </div>
+  </div>
+  <div id="bit-tabla"></div>
+</div>
+</div>
+</div><!-- /app -->
+
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+let lang = 'en';
+
+const MENU = {
+  starters: [
+    {key:'empanadas',     es:'Empanadas Bruder',           en:'Bruder Empanadas',           default:305},
+    {key:'onion_rings',   es:'Crispy Onion Rings',         en:'Crispy Onion Rings',          default:100},
+    {key:'pap_pesto',     es:'Papas c/ Pesto y Vegetales', en:'Potatoes Pesto & Veg',        default:33},
+    {key:'papas_bruder',  es:'Papas Bruder',               en:'Bruder Potatoes',             default:42},
+    {key:'croquetas',     es:'Croquetas Monster (Kale)',   en:'Monster Croquettes',          default:22},
+    {key:'hummus',        es:'Hummus de Arveja',           en:'Green Pea Hummus',            default:51},
+    {key:'drunken',       es:'Drunken Sausage',            en:'Drunken Sausage',             default:109},
+    {key:'wings',         es:'Bruder Wings',               en:'Bruder Wings',                default:70},
+    {key:'pork_ceviche',  es:'Crispy Pork Ceviche',        en:'Crispy Pork Ceviche',         default:100},
+    {key:'eggplant',      es:'Eggplant Ceviche',           en:'Eggplant Ceviche',            default:36},
+  ],
+  entrees: [
+    {key:'soup',          es:'Sopa de Calabaza',           en:'Pumpkin Soup',                default:31},
+    {key:'insalatta_pollo',  es:'Insalatta con Pollo',        en:'Insalatta w/ Chicken',        default:11},
+    {key:'insalatta_salmon', es:'Insalatta con Salmón',        en:'Insalatta w/ Salmon',         default:11},
+    {key:'insalatta_veggie', es:'Insalatta sin Carne',         en:'Insalatta (No Meat)',         default:0},
+    {key:'salmon',        es:'Garlic Salmon',              en:'Garlic Salmon',               default:241},
+    {key:'dipsy',         es:'Dipsy Chicken',              en:'Dipsy Chicken',               default:48},
+    {key:'chimi_steak',   es:'Chimichurri Steak',          en:'Chimichurri Steak',           default:64},
+    {key:'mixed_grill',   es:'Bruder Mixed Grill',         en:'Bruder Mixed Grill',          default:87},
+    {key:'branzino',      es:'Grilled Branzino',           en:'Grilled Branzino',            default:40},
+  ],
+  burgers: [
+    {key:'vegan',         es:'Vegan Burger',               en:'Vegan Burger',                default:13},
+    {key:'three_pep',     es:'Three Peppercorn Burger',    en:'Three Peppercorn Burger',     default:58},
+    {key:'crispy_chk',    es:'Crispy Chicken Burger',      en:'Crispy Chicken Burger',       default:52},
+    {key:'bacon_cheese',  es:'Bacon Cheeseburger',         en:'Bacon Cheeseburger',          default:180},
+    {key:'blue_cheese',   es:'Blue Cheese Burger',         en:'Blue Cheese Burger',          default:70},
+    {key:'tropical',      es:'Tropical Burger',            en:'Tropical Burger',             default:127},
+  ],
+  pizzas: [
+    {key:'pepperoni',     es:'Pizza Pepperoni',            en:'Pepperoni Pizza',             default:57},
+    {key:'bruder_pizza',  es:'Pizza Bruder (Plátano)',     en:'Bruder Pizza (Plantain)',     default:43},
+    {key:'hawaiian',      es:'Pizza Hawaiiana',            en:'Hawaiian Pizza',              default:39},
+    {key:'tomato_pesto',  es:'Pizza Tomate & Pesto',       en:'Tomato & Pesto Pizza',        default:34},
+  ],
+  kids: [
+    {key:'mini_burger',   es:'Mini Burger',                en:'Mini Burger',                 default:36},
+    {key:'nuggets',       es:'Chicken Nuggets',            en:'Chicken Nuggets',             default:52},
+    {key:'mini_pizza',    es:'Mini Pizza',                 en:'Mini Pizza',                  default:18},
+  ],
+};
+
+// RECIPES: what each dish needs (bases + purchased items)
+// Format: {ingredient_key: oz_per_portion OR {unit:'each', qty:N}}
+const RECIPES = {
+  empanadas:    {aji_criollo: 2, empanada_beef:{unit:'each',qty:1}, empanada_chicken:{unit:'each',qty:1}},
+  onion_rings:  {onion_ring_sauce: 3, onion_rings_frozen: 8},
+  pap_pesto:    {papa_roja: 6, pesto_sauce: 1, cherry_tomato: 2},
+  papas_bruder: {papa_roja: 8.8}, // 250g ≈ 8.8oz
+  croquetas:    {croqueta_kale:{unit:'each',qty:3}, blue_cheese_sauce: 2.5, aceite_verde: 0.5},
+  hummus:       {hummus_base: 3, camote_mousse: 1, pico_gallo: 1, barley: 1},
+  drunken:      {chorizo: 6, demiglace: 2, papa_criolla: 5},
+  wings:        {alitas_precocidas:{unit:'each',qty:1}, blue_cheese_sauce: 2, aioli_cilantro: 2},
+  pork_ceviche: {pork_belly: 6, guacamole: 3, lime_juice: 2, camote_mousse: 0.5},
+  eggplant:     {pickled_eggplant: 4, goat_cheese_rounds:{unit:'each',qty:4}, pesto_tomato_sauce: 4, arugula: 1},
+  soup:         {soup_base: 8.8}, // 250g
+  insalatta_pollo:  {arugula: 2, goat_cheese_rounds:{unit:'each',qty:4}, vinagreta: 1.5, pollo_pechuga: 6},
+  insalatta_salmon: {arugula: 2, goat_cheese_rounds:{unit:'each',qty:4}, vinagreta: 1.5, salmon: 6},
+  insalatta_veggie: {arugula: 2, goat_cheese_rounds:{unit:'each',qty:4}, vinagreta: 1.5},
+  salmon:       {salmon: 6, arroz: 4, vegetales_mix: 4},
+  dipsy:        {pollo_marinado: 6, platano_maduro:{unit:'each',qty:4}, papa_roja: 4.4}, // 4 maduros + 1/2 papas bruder
+  chimi_steak:  {churrasco: 10, chimi_sauce_prov: 2, pure_papa: 6},
+  mixed_grill:  {churrasco: 5, pork_belly: 6, pollo_pechuga: 5, ensalada_mix: 1.5, vinagreta: 1.5},
+  branzino:     {branzino: 8, vegetales_mix: 4},
+  vegan:        {vegan_patty:{unit:'each',qty:1}, brioche_bun:{unit:'each',qty:1}, steak_fries: 7, pickled_beet: 2},
+  three_pep:    {beef_patty_5oz:{unit:'each',qty:1}, brioche_bun:{unit:'each',qty:1}, three_pep_sauce: 2, onion_rings_frozen: 1.5, steak_fries: 7},
+  crispy_chk:   {chk_breaded_fillet:{unit:'each',qty:1}, brioche_bun:{unit:'each',qty:1}, coleslaw: 2, steak_fries: 7},
+  bacon_cheese: {beef_patty_5oz:{unit:'each',qty:1}, brioche_bun:{unit:'each',qty:1}, bacon: 2, american_cheese: 0.8, steak_fries: 7},
+  blue_cheese:  {beef_patty_5oz:{unit:'each',qty:1}, brioche_bun:{unit:'each',qty:1}, blue_cheese_sauce: 1.5, red_onion_jam: 3, steak_fries: 7},
+  tropical:     {beef_patty_5oz:{unit:'each',qty:1}, brioche_bun:{unit:'each',qty:1}, red_onion_jam: 2, aioli_cilantro: 2, blue_cheese_crumble: 1, platano_maduro: 2.5, steak_fries: 7},
+  pepperoni:    {pizza_dough:{unit:'each',qty:1}, pizza_sauce: 3, mozzarella: 6, pepperoni: 4},
+  bruder_pizza: {pizza_dough:{unit:'each',qty:1}, pizza_sauce: 3, mozzarella: 6, platano_maduro: 3, bacon: 2, parmesan: 2},
+  hawaiian:     {pizza_dough:{unit:'each',qty:1}, pizza_sauce: 3, mozzarella: 6, bacon: 2, ham: 2, pineapple: 2},
+  tomato_pesto: {pizza_dough:{unit:'each',qty:1}, pizza_sauce: 3, mozzarella: 6, basil_mayo: 1, parmesan: 2, tomato_plum: 3},
+  mini_burger:  {mini_patty_2oz:{unit:'each',qty:1}, slider_bun:{unit:'each',qty:1}, american_cheese: 2, steak_fries: 4},
+  nuggets:      {nuggets:{unit:'each',qty:3}, steak_fries: 4},
+  mini_pizza:   {pizza_dough:{unit:'each',qty:1}, pizza_sauce: 2, mozzarella: 4},
+};
+
+// INGREDIENTS catalog: {name_es, name_en, type, unit, cost_per_oz, supplier, notes}
+// type: 'base' = produce in kitchen, 'buy' = purchase from supplier, 'skip' = no action needed
+const INGREDIENTS = {
+  // BASES — producir en cocina
+  aji_criollo:         {es:'Ají Criollo',          en:'Aji Criollo Sauce',    type:'base', unit:'oz', cost:0.05, freq:'1x semana'},
+  onion_ring_sauce:    {es:'Salsa Onion Rings',     en:'Onion Ring Sauce',     type:'base', unit:'oz', cost:0.04, freq:'1x semana'},
+  blue_cheese_sauce:   {es:'Salsa Blue Cheese',     en:'Blue Cheese Sauce',    type:'base', unit:'oz', cost:0.28, freq:'1x semana · Chef'},
+  aceite_verde:        {es:'Aceite Verde',           en:'Green Oil',            type:'base', unit:'oz', cost:0.06, freq:'1x semana · Chef'},
+  hummus_base:         {es:'Hummus de Arveja',       en:'Green Pea Hummus',     type:'base', unit:'oz', cost:0.08, freq:'1x semana · Chef 🔴'},
+  camote_mousse:       {es:'Mousse de Camote',       en:'Sweet Potato Mousse',  type:'base', unit:'oz', cost:0.05, freq:'1x semana · Chef'},
+  pico_gallo:          {es:'Pico de Gallo',          en:'Pico de Gallo',        type:'base', unit:'oz', cost:0.04, freq:'3x semana'},
+  barley:              {es:'Cebada Cocida',           en:'Cooked Barley',        type:'base', unit:'oz', cost:0.03, freq:'1x semana'},
+  croqueta_kale:       {es:'Croqueta de Kale',       en:'Kale Croquette',       type:'base', unit:'each',cost:0.45, freq:'1x semana · Chef 🔴'},
+  pickled_eggplant:    {es:'Berenjena Encurtida',    en:'Pickled Eggplant',     type:'base', unit:'oz', cost:0.06, freq:'1x semana · Chef'},
+  pesto_tomato_sauce:  {es:'Pesto Tomate Rostizado', en:'Tomato Pesto Sauce',   type:'base', unit:'oz', cost:0.18, freq:'1x semana · Chef'},
+  goat_cheese_rounds:  {es:'Bolitas Queso Cabra',    en:'Goat Cheese Rounds',   type:'base', unit:'each',cost:0.65, freq:'Quincenal · Chef 🔴'},
+  vinagreta:           {es:'Vinagreta Ensalada',     en:'Salad Vinaigrette',    type:'base', unit:'oz', cost:0.05, freq:'1x semana'},
+  pure_papa:           {es:'Puré de Papa',           en:'Mashed Potatoes',      type:'base', unit:'oz', cost:0.06, freq:'2x semana'},
+  demiglace:           {es:'Demiglace',              en:'Demi-Glace',           type:'base', unit:'oz', cost:0.12, freq:'1x semana · Chef'},
+  three_pep_sauce:     {es:'Salsa 3 Pimientas',      en:'Three Peppercorn Sauce',type:'base',unit:'oz', cost:0.15, freq:'1x semana · Chef'},
+  red_onion_jam:       {es:'Mermelada de Cebolla',   en:'Red Onion Jam',        type:'base', unit:'oz', cost:0.08, freq:'1x semana · Chef'},
+  coleslaw:            {es:'Coleslaw',               en:'Coleslaw',             type:'base', unit:'oz', cost:0.04, freq:'1x semana'},
+  aioli_cilantro:      {es:'Aioli Cilantro y Ajo',   en:'Cilantro Garlic Aioli',type:'base', unit:'oz', cost:0.06, freq:'1x semana'},
+  basil_mayo:          {es:'Mayo de Albahaca',        en:'Basil Mayo',           type:'base', unit:'oz', cost:0.07, freq:'1x semana'},
+  pizza_dough:         {es:'Masa de Pizza',           en:'Pizza Dough',          type:'base', unit:'each',cost:0.95, freq:'Según demanda · Chef'},
+  pollo_marinado:      {es:'Pollo Marinado (Dipsy)',  en:'Marinated Chicken',    type:'base', unit:'oz', cost:0.22, freq:'2x semana · Chef'},
+  // COMPRAS — Cheney Brothers
+  empanada_beef:       {es:'Empanada de Carne',       en:'Beef Empanada',        type:'buy', unit:'each',cost:1.05, supplier:'ACENTO', pack:'050/2'},
+  empanada_chicken:    {es:'Empanada de Pollo',       en:'Chicken Empanada',     type:'buy', unit:'each',cost:1.05, supplier:'ACENTO', pack:'050/2'},
+  onion_rings_frozen:  {es:'Onion Rings Beer Battered',en:'Beer Battered Onion Rings',type:'buy',unit:'oz',cost:0.24,supplier:'CBI',pack:'004/2.5'},
+  papa_roja:           {es:'Papa Roja (Idaho/Red B)',  en:'Red/Idaho Potatoes',   type:'buy', unit:'oz', cost:0.02, supplier:'CBI', pack:'001/50'},
+  papa_criolla:        {es:'Papa Criolla Amarilla',    en:'Yellow Potato',        type:'buy', unit:'oz', cost:0.06, supplier:'LOCAL', pack:'varies'},
+  pesto_sauce:         {es:'Salsa Pesto Basil',        en:'Basil Pesto Sauce',    type:'buy', unit:'oz', cost:0.35, supplier:'ARMANINO', pack:'006/30'},
+  cherry_tomato:       {es:'Tomates Cherry',           en:'Cherry Tomatoes',      type:'buy', unit:'oz', cost:0.08, supplier:'CBI', pack:'001/25'},
+  chorizo:             {es:'Chorizo Colombiano',       en:'Colombian Chorizo',    type:'buy', unit:'oz', cost:0.31, supplier:'ORNNA', pack:'001/10'},
+  chicken_wings:       {es:'Alitas de Pollo',          en:'Chicken Wings CVP',    type:'buy', unit:'oz', cost:0.08, supplier:'AMICK', pack:'004/10'},
+  alitas_precocidas:   {es:'Alitas Precocidas (30 pcs)', en:'Pre-cooked Wings (30 pcs)',type:'base',unit:'porciones',cost:2.40, freq:'Mensual'},
+  pork_belly:          {es:'Panceta (Pork Belly)',     en:'Pork Belly Skin On',   type:'buy', unit:'oz', cost:0.19, supplier:'PACKER/CHESHIRE', pack:'003/10'},
+  guacamole:           {es:'Guacamole',                en:'Guacamole Original',   type:'buy', unit:'oz', cost:0.30, supplier:'GORDIAN', pack:'012/1'},
+  lime_juice:          {es:'Jugo de Limón',            en:'Fresh Lime Juice',     type:'buy', unit:'oz', cost:0.12, supplier:'ORCHID', pack:'004/1'},
+  arugula:             {es:'Arúgula Baby',             en:'Baby Arugula',         type:'buy', unit:'oz', cost:0.25, supplier:'CBI', pack:'001/5'},
+  soup_base:           {es:'Sopa Calabaza (Prov.)',    en:'Pumpkin Soup (supplier)',type:'buy',unit:'oz', cost:0.18, supplier:'LOCAL', pack:'varies'},
+  salmon:              {es:'Salmón 6oz (porción)',     en:'Salmon Portion 6oz',   type:'buy', unit:'oz', cost:0.56, supplier:'CCI PACK', pack:'001/10'},
+  arroz:               {es:'Arroz (cocinar al momento)',en:'Rice (cook to order)', type:'skip',unit:'oz', cost:0.02, freq:'Al momento'},
+  vegetales_mix:       {es:'Vegetales Mix (proveedor)',en:'Vegetable Mix (supplier)',type:'skip',unit:'oz',cost:0.08, supplier:'LOCAL'},
+  pollo_pechuga:       {es:'Pechuga de Pollo',         en:'Chicken Breast',       type:'buy', unit:'oz', cost:0.11, supplier:'AMICK', pack:'004/10'},
+  churrasco:           {es:'Churrasco (porcionado)',   en:'Beef Flap Steak',      type:'buy', unit:'oz', cost:1.16, supplier:'ACENTO', pack:'016/10'},
+  chimi_sauce_prov:    {es:'Salsa Chimichurri (Prov)',en:'Chimichurri Sauce',     type:'buy', unit:'oz', cost:0.24, supplier:'SAVOR', pack:'004/2'},
+  platano_maduro:      {es:'Plátano Maduro',           en:'Sweet Plantain',       type:'buy', unit:'oz', cost:0.12, supplier:'MAYA/BIG BANA', pack:'008/3'},
+  ensalada_mix:        {es:'Mix Ensalada',             en:'Spring Mix Lettuce',   type:'buy', unit:'oz', cost:0.11, supplier:'CBI', pack:'001/3'},
+  branzino:            {es:'Branzino (LOCAL)',         en:'Branzino',             type:'buy', unit:'oz', cost:0.75, supplier:'LOCAL', pack:'varies'},
+  vegan_patty:         {es:'Patty Vegano',             en:'Vegan Burger Patty',   type:'buy', unit:'each',cost:1.50, supplier:'DR PRAEG', pack:'040/4'},
+  brioche_bun:         {es:'Pan Brioche 4"',           en:'Brioche Bun 4"',       type:'buy', unit:'each',cost:0.51, supplier:'CYRILS', pack:'084/1.76'},
+  steak_fries:         {es:'Papas Steak Cut (congeladas)',en:'Steak Cut Fries',   type:'buy', unit:'oz', cost:0.15, supplier:'MCCAIN', pack:'006/5'},
+  pickled_beet:        {es:'Remolacha Encurtida',      en:'Pickled Beetroot',     type:'buy', unit:'oz', cost:0.10, supplier:'CBI', pack:'001/5'},
+  three_pep_ing:       {es:'Ingredientes 3 Pimientas', en:'3 Peppercorn Ingr.',  type:'buy', unit:'oz', cost:0.10, supplier:'CBI', pack:'varies'},
+  chk_breaded_fillet:  {es:'Pollo Apanado Fillet',    en:'Breaded Chicken Fillet',type:'buy',unit:'each',cost:2.85, supplier:'BRAKEBUS', pack:'001/10'},
+  beef_patty_5oz:      {es:'Patty Carne 5oz',         en:'Beef Patty 5oz',       type:'buy', unit:'each',cost:1.06, supplier:'PROVEEDOR', pack:'porcionado'},
+  bacon:               {es:'Bacon Apple Cured',        en:'Bacon Apple Cured',    type:'buy', unit:'oz', cost:0.24, supplier:'FARMLAND', pack:'001/15'},
+  american_cheese:     {es:'Queso Americano',          en:'American White Cheese',type:'buy', unit:'oz', cost:0.16, supplier:'DUCKDELI', pack:'004/5'},
+  red_onion_jam_ingr:  {es:'Cebolla Roja (jam)',       en:'Red Onion (jam)',      type:'buy', unit:'oz', cost:0.07, supplier:'CBI', pack:'001/25'},
+  blue_cheese_crumble: {es:'Blue Cheese Crumble',     en:'Blue Cheese Crumbled', type:'buy', unit:'oz', cost:0.29, supplier:'TREASURE', pack:'004/5'},
+  pizza_sauce:         {es:'Salsa Pizza Pizzaiolo',    en:'Pizza Pizzaiolo Sauce',type:'buy', unit:'oz', cost:0.23, supplier:'STANISLA', pack:'006/#'},
+  mozzarella:          {es:'Mozzarella Rallada',       en:'Mozzarella Shredded',  type:'buy', unit:'oz', cost:0.19, supplier:'PACKER/GRANDE', pack:'various'},
+  pepperoni:           {es:'Pepperoni Sliced',         en:'Pepperoni Sliced',     type:'buy', unit:'oz', cost:0.26, supplier:'MARGHERI', pack:'002/12.5'},
+  ham:                 {es:'Jamón Cocido',             en:'Cooked Ham',           type:'buy', unit:'oz', cost:0.15, supplier:'LOCAL', pack:'varies'},
+  pineapple:           {es:'Piña en Jugo',             en:'Pineapple in Juice',   type:'buy', unit:'oz', cost:0.29, supplier:'CBI', pack:'001/1'},
+  parmesan:            {es:'Parmesano Rallado',        en:'Parmesan Shredded',    type:'buy', unit:'oz', cost:0.28, supplier:'FRONTE', pack:'002/5'},
+  tomato_plum:         {es:'Tomate Plum',              en:'Plum Tomato',          type:'buy', unit:'oz', cost:0.05, supplier:'CBI', pack:'various'},
+  mini_patty_2oz:      {es:'Patty Mini 2oz',           en:'Mini Beef Patty 2oz',  type:'buy', unit:'each',cost:0.42, supplier:'PROVEEDOR', pack:'porcionado'},
+  slider_bun:          {es:'Pan Slider Brioche',       en:'Brioche Slider Bun',   type:'buy', unit:'each',cost:0.43, supplier:'TURANO', pack:'012/18'},
+  nuggets:             {es:'Chicken Nuggets',          en:'Chicken Nuggets',      type:'buy', unit:'each',cost:0.35, supplier:'TYSON/LOCAL', pack:'varies'},
+};
+
+// ══════════════════════════════════════════════
+// CHENEY BROTHERS — INVENTARIO GENERAL CATALOG
+// ══════════════════════════════════════════════
+const CHENEY_CATALOG = {
+  carnes: {label:'🥩 Carnes', items:[
+    {code:'1001', name:'Bacon Layout Apple Cured 16/22 2#',      unit:'LB',    price:3.57,  min:5},
+    {code:'1002', name:'Beef Steak Flap Churrasco CH Marinate',  unit:'PORCION',price:18.58, min:5},
+    {code:'1003', name:'Pork Belly Skin Off',                    unit:'LB',    price:3.11,  min:5},
+    {code:'1004', name:'Sausage Chorizo Link 4/1 Colombia',      unit:'CASE',  price:4.97,  min:5},
+    {code:'1005', name:'Beef Ground Bulk Angus 80/20',           unit:'PORCION',price:4.24,  min:5},
+    {code:'1006', name:'Ham Sliced Cooked',                      unit:'LB',    price:5.55,  min:5},
+    {code:'1007', name:'Pepperoni Sliced 14-16 Ct',              unit:'LB',    price:3.995, min:5},
+  ]},
+  aves: {label:'🍗 Aves', items:[
+    {code:'2001', name:'Chix Breast Random B/S Jumbo',           unit:'LB',    price:1.74,  min:5},
+    {code:'2002', name:'Chix Breast Strip Breaded FC',           unit:'PORCION',price:1.235, min:5},
+    {code:'2003', name:'Chix Wing Cut CVP Jumbo 5-8 CT',         unit:'PORCION',price:1.32,  min:5},
+    {code:'2004', name:'Chix Breast Breaded Fillet',             unit:'PORCION',price:2.12,  min:5},
+    {code:'2005', name:'Chix Leg Quarter Jumbo CVP',             unit:'PORCION',price:0.39,  min:5},
+  ]},
+  pescados: {label:'🐟 Pescados', items:[
+    {code:'3001', name:'Salmon Portion 6 oz B/L S/L IVP',        unit:'PORCION',price:8.9,  min:5},
+    {code:'3002', name:'Branzino Butterfly 6-8 oz B/L S/ON',     unit:'PORCION',price:3.92,  min:5},
+  ]},
+  vegetales: {label:'🥬 Vegetales / Produce', items:[
+    {code:'4001', name:'Arrugula Baby B&W 2/1.5#',               unit:'LB',    price:4.90,  min:3},
+    {code:'4002', name:'Avocado Hass 60 Ct #1 Villita',          unit:'EACH',  price:0.7135,min:3},
+    {code:'4003', name:'Lettuce Mesclun / Spring Mix 3#',        unit:'LB',    price:4.32,  min:3},
+    {code:'4004', name:'Lime 175 Ct',                            unit:'EACH',  price:0.2971,min:3},
+    {code:'4005', name:'Onion Red Jumbo 25#',                    unit:'LB',    price:0.876, min:3},
+    {code:'4006', name:'Cherry Tomatoes Extra Large',            unit:'LB',    price:2.6542,min:3},
+    {code:'4007', name:'Parsley Curly 60 Ct',                    unit:'CT',    price:0.6083,min:3},
+    {code:'4009', name:'Potato Sweet Jumbo 40#',                 unit:'LB',    price:0.56,  min:3},
+    {code:'4010', name:'Celery 30 Ct Sleeved',                   unit:'LB',    price:0.58,  min:3},
+    {code:'4011', name:'Mushroom Button Size',                   unit:'LB',    price:3.078, min:3},
+    {code:'4012', name:'Orange Cal 56 Ct',                       unit:'CASE',  price:37.40, min:3},
+    {code:'4013', name:'Cilantro 60 Ct',                         unit:'CT',    price:0.7367,min:3},
+    {code:'4014', name:'Potato Idaho 50 Ct',                     unit:'EACH',  price:0.762, min:3},
+    {code:'4016', name:'Tomato Plum 25#',                        unit:'LB',    price:1.248, min:3},
+    {code:'4017', name:'Thyme 1#',                               unit:'OZ',    price:0.7169,min:3},
+    {code:'4018', name:'Rosemary 1#',                            unit:'OZ',    price:0.6975,min:3},
+    {code:'4020', name:'Carrots Jumbo 50#',                      unit:'LB',    price:0.388, min:3},
+    {code:'4021', name:'Potatoes Red B Size #1',                 unit:'LB',    price:0.627, min:3},
+    {code:'4022', name:'Peppers Baby Mini Sweets',               unit:'OZ',    price:0.2823,min:3},
+    {code:'4023', name:'Kale Green Clean & Trimmed',             unit:'LB',    price:2.324, min:3},
+    {code:'4024', name:'Peas Green Sweet A Grade',               unit:'LB',    price:1.539, min:3},
+    {code:'4025', name:'Garlic Whole Peeled Fresh',              unit:'LB',    price:3.171, min:3},
+    {code:'4027', name:'Eggplant Fancy 25 Lb avg',               unit:'LB',    price:1.4008,min:3},
+    {code:'4029', name:'Beets Red 1/5#',                         unit:'LB',    price:1.782, min:3},
+    {code:'4030', name:'Green Cabbage',                          unit:'LB',    price:1.2735,min:3},
+    {code:'4031', name:'Carrots Matchstick Wings',               unit:'LB',    price:0.388, min:3},
+  ]},
+  abarrotes: {label:'🏪 Abarrotes / Grocery', items:[
+    {code:'5001', name:'Onion Rings Beer Battered 5/8',          unit:'LB',    price:3.755, min:2},
+    {code:'5002', name:'Mustard Yellow Salad Jug 4/105 oz',      unit:'OZ',    price:0.0524,min:2},
+    {code:'5003', name:'Sauce Worcestershire',                   unit:'OZ',    price:0.2959,min:2},
+    {code:'5004', name:'Salt Granulated Plain Bag',              unit:'LB',    price:0.3028,min:2},
+    {code:'5005', name:'Spice Pepper Black Ground',              unit:'OZ',    price:1.8222,min:2},
+    {code:'5006', name:'Sauce Pesto Basil No Nuts',              unit:'OZ',    price:0.1375,min:2},
+    {code:'5008', name:'Spice Oregano Whole',                    unit:'CASE',  price:34.09, min:2},
+    {code:'5010', name:'Quinoa White Prewashed',                 unit:'CASE',  price:47.62, min:2},
+    {code:'5011', name:'Beans Garbanzo Fancy Imported Italy',    unit:'CASE',  price:33.97, min:2},
+    {code:'5012', name:'Maduros (slices) 24Lb',                  unit:'CASE',  price:37.99, min:2},
+    {code:'5013', name:'Flour Corn White Brown Bag Maseca',      unit:'BAG',   price:31.50, min:2},
+    {code:'5014', name:'Paste Tahini',                           unit:'CASE',  price:76.67, min:2},
+    {code:'5015', name:'Barley Pearled',                         unit:'CASE',  price:29.06, min:2},
+    {code:'5016', name:'Cheese Goat Log Domestic',              unit:'CASE',  price:33.01, min:2},
+    {code:'5017', name:'Tomatoes Sundried Tray Pack',            unit:'CASE',  price:17.13, min:2},
+    {code:'5018', name:'Broth Beef 100% Natural',                unit:'CASE',  price:44.90, min:2},
+    {code:'5019', name:'Potato Papa Criolla',                    unit:'CASE',  price:35.82, min:2},
+    {code:'5020', name:'Bread Crumbs Italian Seasoned',          unit:'CASE',  price:19.64, min:2},
+    {code:'5021', name:'Sauce Pizza Pizzaiolo',                  unit:'CASE',  price:43.93, min:2},
+    {code:'5022', name:'Rice Jasmin',                            unit:'BAG',   price:20.99, min:2},
+    {code:'5023', name:'Sauce Chimichurri',                      unit:'CASE',  price:38.81, min:2},
+    {code:'5030', name:'Sugar Granulated Extra Fine',            unit:'BAG',   price:35.04, min:2},
+    {code:'5032', name:'Sauce Demi Glaze Brown',                 unit:'CASE',  price:84.16, min:2},
+    {code:'5036', name:'Flour All Purpose H&R',                  unit:'BAG',   price:10.28, min:2},
+    {code:'5037', name:'Corn Starch',                            unit:'BAG',   price:53.99, min:2},
+    {code:'5038', name:'Mayonnaise Heavy Duty',                  unit:'CASE',  price:47.11, min:2},
+    {code:'5039', name:'Togarashi',                              unit:'BAG',   price:31.95, min:2},
+    {code:'5040', name:'Oil Soybean Vegetable',                  unit:'CASE',  price:36.11, min:2},
+    {code:'5041', name:'Sauce Soy Lite Low Sodium',              unit:'CASE',  price:38.98, min:2},
+    {code:'5042', name:'Sauce Hoisin',                           unit:'CASE',  price:47.44, min:2},
+    {code:'5044', name:'Oil Olive Extra Virgin Italy Tins',      unit:'CASE',  price:72.40, min:2},
+    {code:'5045', name:'Bun Brioche Homestyle 4" Sliced',        unit:'CASE',  price:0.648, min:2},
+    {code:'5048', name:'Shortening Clear Liquid Trans Fat Free', unit:'EACH',  price:35.99, min:2},
+    {code:'5057', name:'Spice Cumin Ground',                     unit:'CASE',  price:29.68, min:2},
+    {code:'5058', name:'Ketchup Fancy 33% Solids',               unit:'CASE',  price:42.55, min:2},
+    {code:'5064', name:'Sauce Chocolate Designer',               unit:'CASE',  price:35.70, min:2},
+    {code:'5066', name:'Corn Cut IQF Super Sweet',               unit:'CASE',  price:33.79, min:2},
+    {code:'5068', name:'Vinegar Apple Cider Distilled',          unit:'CASE',  price:34.54, min:2},
+    {code:'5070', name:'Cheesecake New York 10" 16 Cut',         unit:'CASE',  price:57.19, min:2},
+    {code:'5071', name:'California Veggie Burger',               unit:'CASE',  price:49.99, min:2},
+    {code:'5074', name:'Yeast Fresh Compressed Bakers Select',   unit:'CASE',  price:39.20, min:2},
+    {code:'5076', name:'Flour 00 Pizza Bread',                   unit:'BAG',   price:52.75, min:2},
+  ]},
+  lacteos: {label:'🧀 Lácteos / Dairy', items:[
+    {code:'6001', name:'Milk Whole',                             unit:'GAL',   price:3.99,  min:3},
+    {code:'6002', name:'Cheese Blue Crumbled',                   unit:'CASE',  price:4.52,  min:3},
+    {code:'6003', name:'Creamy Heavy Whipping Cream 40% ESL',    unit:'CASE',  price:52.58, min:3},
+    {code:'6005', name:'Cheese Parmesan Shredded Aged 12 Month', unit:'CASE',  price:44.42, min:3},
+    {code:'6006', name:'Butter Solids Unsalted AA',              unit:'LB',    price:3.38,  min:3},
+    {code:'6008', name:'Eggs Large Loose 15 Dozen',              unit:'EACH',  price:22.67, min:3},
+    {code:'6009', name:'Cheese Mozzarella Shredded Whole Milk',  unit:'LB',    price:2.97,  min:3},
+    {code:'6010', name:'Cheese American White 120 Ct',           unit:'LB',    price:2.51,  min:3},
+  ]},
+  bebidas: {label:'🍺 Bebidas', items:[
+    {code:'7001', name:'Wine Cooking Sauterne',                  unit:'CASE',  price:38.11, min:1},
+    {code:'7002', name:'Brewlando Cerveza',                      unit:'KEG',   price:90.00, min:1},
+  ]},
+};
+
+// Stock state for Cheney manual entry
+window._cheneyStock = {};
+
+function buildCheneyManual() {
+  const grid = document.getElementById('cheney-manual-grid');
+  if (!grid) return;
+  let html = '';
+  Object.entries(CHENEY_CATALOG).forEach(([cat, catData]) => {
+    html += `<div style="grid-column:1/-1;margin-top:14px"><span class="section-label" style="background:var(--surface3);color:var(--text2)">${catData.label}</span></div>`;
+    catData.items.forEach(item => {
+      const stock = window._cheneyStock[item.code] || '';
+      html += `<div class="input-item">
+        <label style="font-size:10px">[${item.code}] ${item.name} <span style="color:var(--text3)">(${item.unit} · $${item.price})</span></label>
+        <input type="number" id="ch-${item.code}" min="0" placeholder="Stock actual" value="${stock}" oninput="window._cheneyStock['${item.code}']=parseFloat(this.value)||0">
+      </div>`;
+    });
+  });
+  grid.innerHTML = html;
+}
+
+function loadCheneyFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const waitForXLSX = (cb) => {
+    if (window.XLSX) { cb(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = cb; document.head.appendChild(s);
+  };
+  waitForXLSX(() => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const wb = XLSX.read(data, {type:'array'});
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+        let loaded = 0;
+        rows.forEach(row => {
+          const code = String(row[1]||'').trim(); // column B = Stock Code
+          const stock = parseFloat(String(row[6]||'').replace(',','.')) || 0; // column G = Stock Actual
+          if (code && /^\d{4}$/.test(code)) {
+            window._cheneyStock[code] = stock;
+            loaded++;
+          }
+        });
+        // Rebuild manual grid with loaded values
+        buildCheneyManual();
+        const lbl = document.getElementById('lbl-cheney');
+        const drop = document.getElementById('drop-cheney');
+        if (lbl) lbl.textContent = `✓ ${loaded} productos cargados de "${file.name}"`;
+        if (drop) { drop.style.borderColor='var(--teal)'; drop.style.background='var(--teal-bg)'; }
+      } catch(err) {
+        document.getElementById('lbl-cheney').textContent = '❌ Error: ' + err.message;
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function calcularPedido() {
+  const pedido = [];
+  let totalCosto = 0;
+  Object.entries(CHENEY_CATALOG).forEach(([cat, catData]) => {
+    catData.items.forEach(item => {
+      const inp = document.getElementById('ch-' + item.code);
+      const stock = inp ? (parseFloat(inp.value)||0) : (window._cheneyStock[item.code]||0);
+      const estado = stock === 0 ? 'urgente' : stock < item.min ? 'bajo' : 'ok';
+      const pedir = stock < item.min ? Math.ceil(item.min - stock + item.min) : 0; // reorder to 2x min
+      pedido.push({...item, cat, stock, estado, pedir, valorPedido: pedir * item.price});
+      if (pedir > 0) totalCosto += pedir * item.price;
+    });
+  });
+
+  const urgentes = pedido.filter(p => p.estado === 'urgente');
+  const bajos = pedido.filter(p => p.estado === 'bajo');
+  const okItems = pedido.filter(p => p.estado === 'ok');
+
+  let html = `<div class="summary-grid">
+    <div class="summary-box"><div class="summary-val" style="color:var(--red)">${urgentes.length}</div><div class="summary-lbl">🔴 Sin Stock</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:var(--amber)">${bajos.length}</div><div class="summary-lbl">🟡 Stock Bajo</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:var(--green)">${okItems.length}</div><div class="summary-lbl">✅ OK</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:var(--teal)">$${totalCosto.toFixed(0)}</div><div class="summary-lbl">Estimado Pedido</div></div>
+  </div>`;
+
+  const renderSection = (items, title, color, bgColor) => {
+    if (!items.length) return '';
+    let t = `<div class="result-section"><div class="result-header"><div class="result-dot" style="background:${color}"></div><div class="result-title">${title}</div></div>
+    <table class="result-table"><thead><tr>
+      <th>Código</th><th>Producto</th><th>Stock</th><th>Mín</th><th>Pedir</th><th>Unidad</th><th>Precio</th><th>Valor</th>
+    </tr></thead><tbody>`;
+    items.forEach(p => {
+      t += `<tr style="background:${bgColor}">
+        <td style="font-family:var(--mono);color:var(--text3)">${p.code}</td>
+        <td><strong>${p.name}</strong></td>
+        <td style="font-family:var(--mono);text-align:center;color:${p.stock===0?'var(--red)':'var(--amber)'}">${p.stock}</td>
+        <td style="font-family:var(--mono);text-align:center;color:var(--text3)">${p.min}</td>
+        <td style="font-family:var(--mono);text-align:center;font-weight:700;color:${color}">${p.pedir||'—'}</td>
+        <td style="color:var(--text3)">${p.unit}</td>
+        <td style="font-family:var(--mono);color:var(--text2)">$${p.price.toFixed(2)}</td>
+        <td style="font-family:var(--mono);font-weight:600;color:${color}">${p.pedir?'$'+p.valorPedido.toFixed(2):'—'}</td>
+      </tr>`;
+    });
+    t += `</tbody></table></div>`;
+    return t;
+  };
+
+  html += renderSection(urgentes, '🔴 URGENTE — Sin Stock', 'var(--red)', 'var(--red-bg)');
+  html += renderSection(bajos, '🟡 Stock Bajo — Reponer', 'var(--amber)', 'var(--amber-bg)');
+
+  const pedidoItems = pedido.filter(p => p.pedir > 0);
+  if (pedidoItems.length === 0) {
+    html += `<div class="card" style="text-align:center;padding:30px;color:var(--green)"><div style="font-size:28px">✅</div><div style="font-weight:600;margin-top:8px">Todo el inventario está en nivel adecuado</div></div>`;
+  }
+
+  html += `<div class="btn-row">
+    <button class="btn btn-secondary" onclick="window.print()">⎙ Imprimir Pedido</button>
+    <button class="btn btn-secondary" onclick="copyPedidoCheney()">📋 Copiar para WhatsApp</button>
+  </div>`;
+
+  window._pedidoData = {items: pedidoItems, total: totalCosto};
+  const res = document.getElementById('cheney-order-results');
+  res.innerHTML = html;
+  res.style.display = 'block';
+}
+
+function copyPedidoCheney() {
+  if (!window._pedidoData || !window._pedidoData.items.length) { calcularPedido(); return; }
+  const today = new Date().toLocaleDateString('es-CO');
+  const lines = [`📦 BRUDER OVIEDO — PEDIDO CHENEY BROTHERS`, `Fecha: ${today} · Rep: Carlos Alarcón 019139`, '='.repeat(45)];
+  window._pedidoData.items.sort((a,b)=>a.cat.localeCompare(b.cat)).forEach(p => {
+    lines.push(`[${p.code}] ${p.name}: ${p.pedir} ${p.unit} — $${p.valorPedido.toFixed(2)}`);
+  });
+  lines.push('='.repeat(45));
+  lines.push(`TOTAL ESTIMADO: $${window._pedidoData.total.toFixed(2)}`);
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    alert('¡Copiado! Pega en WhatsApp o email.');
+  }).catch(() => alert(lines.join('\n')));
+}
+
+// ══════════════════════════════════════════════
+// FOOD COST — MENU PRICES & ANALYSIS
+// ══════════════════════════════════════════════
+const MENU_PRICES = {
+  // Starters — Real costs from Chef inventory system (May 2026)
+  empanadas:       {price:14,  cost:3.22},
+  onion_rings:     {price:13,  cost:0.55},
+  pap_pesto:       {price:13,  cost:0.21},
+  papas_bruder:    {price:12,  cost:0.19},
+  croquetas:       {price:14,  cost:1.50},
+  hummus:          {price:13,  cost:0.73},
+  drunken:         {price:17,  cost:2.74},
+  wings:           {price:17,  cost:0.89},
+  pork_ceviche:    {price:18,  cost:2.68},
+  eggplant:        {price:16,  cost:0.84},
+  // Soups/Salads
+  soup:            {price:12,  cost:1.66},
+  insalatta_pollo: {price:18,  cost:2.72},
+  insalatta_salmon:{price:22,  cost:3.31},
+  insalatta_veggie:{price:15,  cost:2.06},
+  // Entrees
+  salmon:          {price:28,  cost:2.14},
+  dipsy:           {price:22,  cost:2.40},
+  chimi_steak:     {price:32,  cost:6.01},
+  mixed_grill:     {price:38,  cost:12.43},
+  branzino:        {price:30,  cost:2.53},
+  // Burgers
+  vegan:           {price:18,  cost:4.20},
+  three_pep:       {price:20,  cost:2.68},
+  crispy_chk:      {price:19,  cost:3.31},
+  bacon_cheese:    {price:19,  cost:2.55},
+  blue_cheese:     {price:20,  cost:2.36},
+  tropical:        {price:20,  cost:2.73},
+  // Pizzas
+  pepperoni:       {price:18,  cost:2.99},
+  bruder_pizza:    {price:19,  cost:4.15},
+  hawaiian:        {price:18,  cost:4.26},
+  tomato_pesto:    {price:17,  cost:3.55},
+  // Kids
+  mini_burger:     {price:10,  cost:1.72},
+  nuggets:         {price:10,  cost:0.77},
+  mini_pizza:      {price:9,   cost:2.50},
+};
+
+function renderFoodCost() {
+  const CATEGORY_MAP = {
+    empanadas:'Starter',onion_rings:'Starter',pap_pesto:'Starter',papas_bruder:'Starter',
+    croquetas:'Starter',hummus:'Starter',drunken:'Starter',wings:'Starter',
+    pork_ceviche:'Starter',eggplant:'Starter',
+    soup:'Soup/Salad',insalatta_pollo:'Soup/Salad',insalatta_salmon:'Soup/Salad',insalatta_veggie:'Soup/Salad',
+    salmon:'Entree',dipsy:'Entree',chimi_steak:'Entree',mixed_grill:'Entree',branzino:'Entree',
+    vegan:'Burger',three_pep:'Burger',crispy_chk:'Burger',bacon_cheese:'Burger',blue_cheese:'Burger',tropical:'Burger',
+    pepperoni:'Pizza',bruder_pizza:'Pizza',hawaiian:'Pizza',tomato_pesto:'Pizza',
+    mini_burger:'Kids',nuggets:'Kids',mini_pizza:'Kids',
+  };
+
+  const CAT_COLORS = {
+    Starter:'var(--teal)', 'Soup/Salad':'var(--blue)', Entree:'var(--red)', Burger:'var(--amber)', Pizza:'var(--blue)', Kids:'var(--green)'
+  };
+
+  const byCategory = {};
+  let totalRevenue=0, totalCost=0, totalDishes=0;
+
+  Object.entries(MENU_PRICES).forEach(([key, d]) => {
+    const cat = CATEGORY_MAP[key] || 'Other';
+    if (!byCategory[cat]) byCategory[cat] = [];
+    const fc = ((d.cost / d.price) * 100);
+    const menuItem = Object.values(MENU).flat().find(m=>m.key===key);
+    const name = menuItem ? menuItem.es : key;
+    const proj = menuItem ? (menuItem.default||0) : 0;
+    byCategory[cat].push({key, name, price:d.price, cost:d.cost, fc, proj,
+      weekRevenue: d.price*proj, weekCost: d.cost*proj});
+    totalRevenue += d.price*proj; totalCost += d.cost*proj; totalDishes += proj;
+  });
+
+  const totalFC = totalRevenue > 0 ? (totalCost/totalRevenue*100) : 0;
+  const totalMargin = totalRevenue - totalCost;
+
+  let html = `<div class="summary-grid">
+    <div class="summary-box"><div class="summary-val" style="color:var(--teal)">$${totalRevenue.toFixed(0)}</div><div class="summary-lbl">Revenue est. semana</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:var(--red)">$${totalCost.toFixed(0)}</div><div class="summary-lbl">Costo ingredientes</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:${totalFC<=30?'var(--green)':'var(--red)'}">${totalFC.toFixed(1)}%</div><div class="summary-lbl">Food Cost Global</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:var(--green)">$${totalMargin.toFixed(0)}</div><div class="summary-lbl">Margen bruto est.</div></div>
+  </div>`;
+
+  html += `<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text2)">
+    <strong>Objetivo:</strong> Food cost &lt; 30% · 
+    <span style="color:var(--green)">✅ ≤28%</span> · 
+    <span style="color:var(--amber)">⚠️ 28–33%</span> · 
+    <span style="color:var(--red)">🔴 &gt;33%</span> · 
+    Basado en proyección semana ejemplo (${totalDishes} platos)
+  </div>`;
+
+  Object.entries(byCategory).forEach(([cat, items]) => {
+    const color = CAT_COLORS[cat] || 'var(--text)';
+    html += `<div class="result-section">
+    <div class="result-header"><div class="result-dot" style="background:${color}"></div><div class="result-title">${cat}</div></div>
+    <table class="result-table"><thead><tr>
+      <th>Plato</th><th>Precio</th><th>Costo Ingr.</th><th>Food Cost %</th><th>Margen $</th><th>Proj. sem.</th><th>Revenue est.</th>
+    </tr></thead><tbody>`;
+    items.sort((a,b)=>b.fc-a.fc).forEach(p => {
+      const fcColor = p.fc<=28?'var(--green)':p.fc<=33?'var(--amber)':'var(--red)';
+      const fcIcon = p.fc<=28?'✅':p.fc<=33?'⚠️':'🔴';
+      html += `<tr>
+        <td><strong>${p.name}</strong></td>
+        <td style="font-family:var(--mono);color:var(--teal)">$${p.price.toFixed(2)}</td>
+        <td style="font-family:var(--mono);color:var(--text2)">$${p.cost.toFixed(2)}</td>
+        <td style="font-family:var(--mono);font-weight:700;color:${fcColor}">${fcIcon} ${p.fc.toFixed(1)}%</td>
+        <td style="font-family:var(--mono);color:var(--green)">$${(p.price-p.cost).toFixed(2)}</td>
+        <td style="font-family:var(--mono);text-align:center;color:var(--text3)">${p.proj}</td>
+        <td style="font-family:var(--mono);color:var(--text)">$${p.weekRevenue.toFixed(0)}</td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+  });
+
+  html += `<div style="font-size:11px;color:var(--text3);padding:10px;text-align:center">
+    ✅ Costos reales del sistema de inventario del Chef · Mayo 2026 · Facturas Cheney Brothers verificadas
+  </div>`;
+
+  document.getElementById('foodcost-table').innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+// UI BUILD
+// ══════════════════════════════════════════════
+function buildInputs() {
+  Object.entries(MENU).forEach(([section, items]) => {
+    const grid = document.getElementById('grid-'+section);
+    if (!grid) return;
+    grid.innerHTML = items.map(item => `
+      <div class="input-item">
+        <label>${item[lang]}</label>
+        <input type="number" id="inp-${item.key}" min="0" value="0" placeholder="0">
+      </div>
+    `).join('');
+  });
+}
+
+function setLang(l, btn) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('h-title').textContent = l==='es'?'Planeación de Producción':'Production Planning';
+  document.getElementById('h-sub').textContent = l==='es'?'v11 · Jun 2025 · Ingresa la proyección → calcula producción y compras':'v11 · Jun 2025 · Enter projection → calculates production & purchasing';
+  // Update tabs
+  document.getElementById('tab-proyeccion').textContent = l==='es'?'📊 Proyección':'📊 Projection';
+  document.getElementById('tab-produccion').textContent = l==='es'?'🍳 PP':'🍳 Prep';
+  document.getElementById('tab-compras').textContent    = l==='es'?'🛒 Compras':'🛒 Purchases';
+  document.getElementById('tab-pedido').textContent     = l==='es'?'📦 Pedido Cheney':'📦 Cheney Order';
+  document.getElementById('tab-foodcost').textContent   = '💰 Food Cost';
+  document.getElementById('tab-recetas').textContent    = l==='es'?'📋 Recetas por Lote':'📋 Batch Recipes';
+  document.getElementById('tab-bitacora').textContent   = l==='es'?'📝 Bitácora':'📝 Log';
+  document.getElementById('lbl-starter').textContent = l==='es'?'Starters / Entradas':'Starters';
+  document.getElementById('lbl-entree').textContent = l==='es'?'Entradas Fuertes / Entrees':'Entrees';
+  document.getElementById('lbl-burger').textContent = 'Burgers';
+  document.getElementById('lbl-pizza').textContent = 'Pizzas';
+  document.getElementById('lbl-kids').textContent = l==='es'?'Kids / Niños':'Kids';
+  document.getElementById('proj-title').textContent = l==='es'?'Proyección de Ventas por Semana':'Weekly Sales Projection';
+  document.getElementById('proj-sub').textContent = l==='es'?'Ingresa el número de platos proyectados para la semana':'Enter the number of projected dishes for the week';
+  document.getElementById('btn-calc').textContent = l==='es'?'Calcular Producción y Compras':'Calculate Production & Purchases';
+  document.getElementById('btn-example').textContent = l==='es'?'Cargar proyección ejemplo':'Load example projection';
+  document.getElementById('btn-clear').textContent = l==='es'?'Limpiar':'Clear';
+  buildInputs();
+  // Restore values
+  Object.values(MENU).flat().forEach(item => {
+    const inp = document.getElementById('inp-'+item.key);
+    if (inp && savedValues[item.key]) inp.value = savedValues[item.key];
+  });
+}
+
+const savedValues = {};
+
+function getValues() {
+  const vals = {};
+  Object.values(MENU).flat().forEach(item => {
+    const inp = document.getElementById('inp-'+item.key);
+    vals[item.key] = inp ? (parseInt(inp.value)||0) : 0;
+    savedValues[item.key] = vals[item.key];
+  });
+  return vals;
+}
+
+function cargarEjemplo() {
+  const defaults = {};
+  Object.values(MENU).flat().forEach(item => { defaults[item.key] = item.default||0; savedValues[item.key] = item.default||0; });
+  Object.values(MENU).flat().forEach(item => {
+    const inp = document.getElementById('inp-'+item.key);
+    if (inp) inp.value = item.default||0;
+  });
+}
+
+function limpiar() {
+  Object.values(MENU).flat().forEach(item => {
+    const inp = document.getElementById('inp-'+item.key);
+    if (inp) { inp.value = 0; savedValues[item.key] = 0; }
+  });
+  document.getElementById('prod-results').style.display='none';
+  document.getElementById('prod-placeholder').style.display='block';
+  document.getElementById('comp-results').style.display='none';
+  document.getElementById('comp-placeholder').style.display='block';
+}
+
+function showTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['proyeccion','produccion','compras','pedido','foodcost','recetas','bitacora','admin'].forEach(t => {
+    const el=document.getElementById('pane-'+t); if(el) el.style.display = t===tab?'block':'none';
+  });
+  if (tab === 'pedido' && !window._cheneyBuilt) { buildCheneyManual(); window._cheneyBuilt = true; }
+  if (tab === 'foodcost') renderFoodCost();
+}
+
+// ══════════════════════════════════════════════
+// CALCULATION ENGINE
+// ══════════════════════════════════════════════
+function calcular() {
+  const vals = getValues();
+
+  // Aggregate all ingredient needs
+  const totals = {}; // ingredient_key → total oz or each
+  Object.entries(vals).forEach(([dishKey, qty]) => {
+    if (!qty || !RECIPES[dishKey]) return;
+    Object.entries(RECIPES[dishKey]).forEach(([ingKey, portion]) => {
+      if (!totals[ingKey]) totals[ingKey] = {oz:0, each:0};
+      if (typeof portion === 'object' && portion.unit === 'each') {
+        totals[ingKey].each += portion.qty * qty;
+      } else {
+        totals[ingKey].oz += portion * qty;
+      }
+    });
+  });
+
+  // Separate bases vs purchases
+  const bases = [], purchases = [], skips = [];
+  Object.entries(totals).forEach(([key, total]) => {
+    const ing = INGREDIENTS[key];
+    if (!ing) return;
+    const qty = total.each > 0 ? total.each : Math.ceil(total.oz);
+    const unit = total.each > 0 ? 'each' : 'oz';
+    const cost = qty * ing.cost;
+    const entry = {key, name_es:ing.es, name_en:ing.en, qty, unit, cost, ing};
+    if (ing.type === 'base') bases.push(entry);
+    else if (ing.type === 'buy') purchases.push(entry);
+    else skips.push(entry);
+  });
+
+  bases.sort((a,b) => b.cost-a.cost);
+  purchases.sort((a,b) => b.cost-a.cost);
+
+  // Store flat totals for PP progress
+  const flatForProgress = {};
+  Object.entries(totals).forEach(([k,v]) => {
+    flatForProgress[k] = (typeof v === 'object') ? ((v.each>0)?v.each:v.oz) : (parseFloat(v)||0);
+  });
+  window._lastNeeded = flatForProgress;
+  renderProduccion(bases, vals);
+  renderCompras(purchases, vals);
+  renderRecetas(totals);
+  renderPPProgreso();
+
+  // Switch to produccion tab
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-produccion').classList.add('active');
+  ['proyeccion','produccion','compras','pedido','foodcost','recetas','bitacora'].forEach(t=>{
+    const el=document.getElementById('pane-'+t);
+    if(el) el.style.display = t==='produccion'?'block':'none';
+  });
+}
+
+function renderProduccion(bases, vals) {
+  const inv = window._inventario || {};
+  const totalPlatos = Object.values(vals).reduce((a,b)=>a+b,0);
+  const totalCostBases = bases.reduce((a,b)=>a+b.cost,0);
+
+  const dificiles = bases.filter(b => b.ing.freq && b.ing.freq.includes('Chef'));
+  const faciles   = bases.filter(b => !b.ing.freq || !b.ing.freq.includes('Chef'));
+
+  // Count urgentes (sin stock)
+  const urgentes = bases.filter(b => (inv[b.key]||0) === 0).length;
+
+  let html = `
+  <div class="summary-grid">
+    <div class="summary-box"><div class="summary-val" style="color:var(--amber)">${totalPlatos.toLocaleString()}</div><div class="summary-lbl">${lang==='es'?'Platos proyectados':'Projected dishes'}</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:var(--red)">${urgentes}</div><div class="summary-lbl">${lang==='es'?'Sin stock — URGENTE':'No stock — URGENT'}</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:var(--teal)">${bases.length - urgentes}</div><div class="summary-lbl">${lang==='es'?'Con stock disponible':'Stock available'}</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:var(--green)">$${totalCostBases.toFixed(0)}</div><div class="summary-lbl">${lang==='es'?'Costo estimado':'Est. cost'}</div></div>
+  </div>`;
+
+  function renderTable(list, title, dotColor, badgeClass) {
+    if (list.length === 0) return '';
+    let t = `<div class="result-section"><div class="result-header"><div class="result-dot" style="background:${dotColor}"></div><div class="result-title">${title}</div></div>
+    <table class="result-table"><thead><tr>
+      <th>${lang==='es'?'Producto':'Product'}</th>
+      <th>${lang==='es'?'Necesario':'Needed'}</th>
+      <th>${lang==='es'?'En stock':'In stock'}</th>
+      <th>${lang==='es'?'A producir':'To produce'}</th>
+      <th>Und.</th>
+      <th>${lang==='es'?'Frecuencia':'Frequency'}</th>
+    </tr></thead><tbody>`;
+
+    list.forEach(b => {
+      const stockAct = inv[b.key] !== undefined ? inv[b.key] : '—';
+      const stockNum = parseFloat(stockAct) || 0;
+      const needed   = b.qty;
+      const toProd   = stockNum > 0 ? Math.max(0, needed - stockNum) : needed;
+      const sinStock = stockNum === 0;
+      const parcial  = stockNum > 0 && toProd > 0;
+      const ok       = toProd === 0;
+
+      const rowBg    = sinStock ? 'background:var(--red-bg)' : (parcial ? 'background:var(--amber-bg)' : '');
+      const prodBg   = sinStock ? 'color:var(--red);font-weight:700' : (parcial ? 'color:var(--amber);font-weight:600' : 'color:var(--green)');
+      const badge    = sinStock
+        ? `<span class="badge badge-red">🔴 SIN STOCK</span>`
+        : parcial
+          ? `<span class="badge badge-amber">🟡 PARCIAL</span>`
+          : `<span class="badge" style="background:var(--green-bg);color:var(--green)">✓ OK</span>`;
+
+      const name = b[lang==='es'?'name_es':'name_en'];
+      t += `<tr style="${rowBg}">
+        <td><strong>${name}</strong> ${sinStock||parcial ? badge : ''}</td>
+        <td style="font-family:var(--mono);text-align:center">${needed.toLocaleString()}</td>
+        <td style="font-family:var(--mono);text-align:center;color:${sinStock?'var(--red)':'var(--text2)'}">${stockAct}</td>
+        <td style="font-family:var(--mono);text-align:center;${prodBg}">${toProd > 0 ? toProd.toLocaleString() : ok ? '—' : toProd}</td>
+        <td style="color:var(--text3)">${b.unit}</td>
+        <td><span class="badge ${badgeClass}" style="font-size:10px">${b.ing.freq||'—'}</span></td>
+      </tr>`;
+    });
+    t += '</tbody></table></div>';
+    return t;
+  }
+
+  // Sort: sin stock first, then parcial, then ok
+  const sortByUrgency = arr => arr.sort((a,b) => {
+    const aStock = parseFloat(inv[a.key]||0);
+    const bStock = parseFloat(inv[b.key]||0);
+    if (aStock === 0 && bStock > 0) return -1;
+    if (bStock === 0 && aStock > 0) return 1;
+    return b.qty - a.qty;
+  });
+
+  html += renderTable(sortByUrgency(dificiles),
+    `🔴 ${lang==='es'?'PP Difíciles — Chef':'Hard PP — Chef'}`,
+    'var(--red)', 'badge-red');
+
+  html += renderTable(sortByUrgency(faciles),
+    `🟢 ${lang==='es'?'PP Fáciles — Servicio':'Easy PP — Service'}`,
+    'var(--teal)', 'badge-teal');
+
+  html += `<div class="btn-row"><button class="btn btn-secondary" onclick="window.print()">⎙ ${lang==='es'?'Imprimir PP':'Print PP'}</button></div>`;
+
+  document.getElementById('prod-results').innerHTML = html;
+  document.getElementById('prod-results').style.display = 'block';
+  document.getElementById('prod-placeholder').style.display = 'none';
+}
+
+function renderCompras(purchases, vals) {
+  const totalCost = purchases.reduce((a,b)=>a+b.cost,0);
+  const bySupplier = {};
+  purchases.forEach(p => {
+    const sup = p.ing.supplier || 'OTHER';
+    if (!bySupplier[sup]) bySupplier[sup] = [];
+    bySupplier[sup].push(p);
+  });
+
+  let html = `
+  <div class="summary-grid">
+    <div class="summary-box"><div class="summary-val" style="color:var(--blue)">${purchases.length}</div><div class="summary-lbl">${lang==='es'?'Productos a comprar':'Items to purchase'}</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:var(--red)">$${totalCost.toFixed(0)}</div><div class="summary-lbl">${lang==='es'?'Costo estimado semana':'Est. weekly cost'}</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:var(--teal)">${Object.keys(bySupplier).length}</div><div class="summary-lbl">${lang==='es'?'Proveedores':'Suppliers'}</div></div>
+    <div class="summary-box"><div class="summary-val" style="color:var(--amber)">$${(totalCost/Object.values(vals).reduce((a,b)=>a+b,0)||0).toFixed(2)}</div><div class="summary-lbl">${lang==='es'?'Costo insumo/plato':'Ingredient cost/dish'}</div></div>
+  </div>`;
+
+  // Full list
+  html += `<div class="result-section"><div class="result-header"><div class="result-dot" style="background:var(--blue)"></div><div class="result-title">🛒 ${lang==='es'?'Lista de Compras — Cheney Brothers':'Purchase List — Cheney Brothers'}</div></div>
+  <table class="result-table"><thead><tr>
+    <th>${lang==='es'?'Producto':'Product'}</th>
+    <th>${lang==='es'?'Cantidad':'Qty'}</th>
+    <th>Und.</th>
+    <th>${lang==='es'?'Proveedor':'Supplier'}</th>
+    <th>${lang==='es'?'Presentación':'Pack Size'}</th>
+    <th>${lang==='es'?'Costo est.':'Est. Cost'}</th>
+  </tr></thead><tbody>`;
+
+  purchases.sort((a,b) => b.cost-a.cost).forEach(p => {
+    html += `<tr>
+      <td><strong>${p[lang==='es'?'name_es':'name_en']}</strong></td>
+      <td class="qty-val">${p.qty.toLocaleString()}</td>
+      <td>${p.unit}</td>
+      <td><span class="badge badge-blue">${p.ing.supplier||'—'}</span></td>
+      <td style="font-size:11px;color:var(--text3)">${p.ing.pack||'—'}</td>
+      <td class="cost-val">$${p.cost.toFixed(2)}</td>
+    </tr>`;
+  });
+  html += `<tr style="background:var(--amber-bg)">
+    <td colspan="5"><strong>${lang==='es'?'TOTAL ESTIMADO COMPRAS':'ESTIMATED TOTAL PURCHASE'}</strong></td>
+    <td class="cost-val" style="color:var(--red)"><strong>$${totalCost.toFixed(2)}</strong></td>
+  </tr>`;
+  html += '</tbody></table></div>';
+
+  html += `<div class="btn-row">
+    <button class="btn btn-secondary" onclick="window.print()">⎙ ${lang==='es'?'Imprimir lista':'Print list'}</button>
+    <button class="btn btn-secondary" onclick="copyCompras()">📋 ${lang==='es'?'Copiar para WhatsApp':'Copy for WhatsApp'}</button>
+  </div>`;
+  html += `<div id="copy-confirm" style="display:none;margin-top:8px;padding:10px;background:var(--teal-bg);border-radius:var(--radius-sm);color:var(--teal);font-size:13px">✓ ${lang==='es'?'¡Copiado! Pega en WhatsApp o email.':'Copied! Paste in WhatsApp or email.'}</div>`;
+
+  document.getElementById('comp-results').innerHTML = html;
+  document.getElementById('comp-results').style.display = 'block';
+  document.getElementById('comp-placeholder').style.display = 'none';
+
+  // Store for copy
+  window._purchases = purchases;
+  window._totalCost = totalCost;
+}
+
+function copyCompras() {
+  if (!window._purchases) return;
+  const lines = ['🛒 BRUDER OVIEDO — LISTA DE COMPRAS', '='.repeat(40)];
+  window._purchases.forEach(p => {
+    lines.push(`${p[lang==='es'?'name_es':'name_en']}: ${p.qty} ${p.unit} (${p.ing.supplier||''}) — $${p.cost.toFixed(2)}`);
+  });
+  lines.push('='.repeat(40));
+  lines.push(`TOTAL ESTIMADO: $${window._totalCost.toFixed(2)}`);
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const el = document.getElementById('copy-confirm');
+    if (el) { el.style.display='block'; setTimeout(()=>el.style.display='none', 3000); }
+  });
+}
+
+
+// ══════════════════════════════════════════════
+// BASE RECIPES DATA
+// ══════════════════════════════════════════════
+const BASE_RECIPES = {
+  aji_criollo:        {name:'Aji Criollo Sauce', name_es:'Ají Criollo', name_en:'Aji Criollo Sauce',          yield_oz:5,   freq:'1x semana',        storage:'❄️ Refri 7 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+procedure:'Picar finamente el tomate plum, la cebolla roja y el cilantro. Combinar todos los ingredientes en un bowl. Mezclar bien y dejar reposar 10 minutos para desarrollar los sabores. Ajustar sazon. Servir como condimento.', procedure_en:'Finely dice plum tomato, red onion and cilantro. Combine all ingredients in a bowl. Mix well and rest 10 minutes to develop flavors. Adjust seasoning. Serve as condiment.',
+        ingredients:[['Red Onion','57','g'],['Cilantro','6','g'],['Tomato Plum','28','g'],['Salt','1','g'],['Fresh Lime Juice','14','g'],['Black Pepper','1','g'],['White Vinegar','7','g'],['Togarashi','3','g'],['Hondashi','1','g'],['Parsley','6','g']]},
+  onion_ring_sauce:   {name:'Salsa Onion Rings', name_es:'Salsa Onion Rings', name_en:'Onion Ring Sauce',           yield_oz:12, freq:'1x semana',        storage:'❄️ Refri 7 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+procedure:'En un bowl, batir juntos la cerveza Brewlando, mayonesa, mostaza amarilla y salsa Worcestershire hasta suave. Sazonar con sal, azucar y pimienta. Hidratar maicena en agua fria y agregar poco a poco revolviendo hasta espesar. Refrigerar.', procedure_en:'In a bowl, whisk Brewlando beer, mayonnaise, yellow mustard and Worcestershire sauce until smooth. Season with salt, sugar and pepper. Dissolve cornstarch in cold water and stir in gradually until thickened. Refrigerate.',
+        ingredients:[['Brewlando Beer','227','g'],['Mayonnaise Heavy Duty','255','g'],['Yellow Mustard','14','g'],['Worcestershire Sauce','14','g'],['Salt','7','g'],['Granulated Sugar','43','g'],['Black Pepper','3','g']]},
+  blue_cheese_sauce:  {name:'Blue Cheese Sauce', name_es:'Salsa Blue Cheese', name_en:'Blue Cheese Sauce',           yield_oz:16, freq:'1x semana',        storage:'❄️ Refri 7 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+    procedure:'En una olla pequena a fuego bajo, combinar el queso azul desmoronado, la crema de leche y el jugo de limon. Revolver hasta que el queso se derrita y la salsa este suave. Sazonar con sal y pimienta. NO hervir.', procedure_en:'In a small saucepan over low heat, combine crumbled blue cheese, heavy cream and lime juice. Stir until cheese melts and sauce is smooth. Season with salt and pepper. DO NOT boil.',
+    ingredients:[['Blue Cheese Crumbled','198','g'],['Heavy Whipping Cream 40%','283','g'],['Unsalted Butter','57','g'],['Salt','1','g'],['Black Pepper','1','g'],['Lime','0.5','each']]},
+  aceite_verde:       {name:'Aceite Verde / Green Oil', name_es:'Aceite Verde', name_en:'Green Oil',    yield_oz:32,    freq:'1x semana',        storage:'❄️ Refri 7 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+    procedure:'Blanquear el perejil en agua hirviendo 30 segundos, luego enfriar en agua con hielo. Licuar el perejil con el aceite de soya y agua hasta suave y verde vibrante. Colar si se desea. Almacenar refrigerado.', procedure_en:'Blanch parsley in boiling water 30 seconds, cool in ice water. Blend parsley with soybean oil and water until smooth and vibrant green. Strain if desired. Store refrigerated.',
+    ingredients:[['Soybean Oil','907','g'],['Parsley','907','g']]},
+  hummus_base:        {name:'Hummus de Arveja', name_es:'Hummus de Arveja', name_en:'Green Pea Hummus',            yield_oz:16, freq:'1x semana',        storage:'🧊 Congelado 30d',  color:'var(--green)',  colorBg:'var(--green-bg)',
+procedure:'Cocinar los guisantes frescos o descongelar. Licuar con garbanzos, tahini, ajo, aceite de oliva, jugo de limon, comino, sal y pimienta hasta suave y cremoso. Ajustar consistencia con agua si es necesario.', procedure_en:'Cook fresh peas or thaw. Blend with chickpeas, tahini, garlic, olive oil, lime juice, cumin, salt and pepper until smooth and creamy. Adjust consistency with water if needed.',
+        ingredients:[['Green Peas Sweet','283','g'],['Garlic Whole Peeled','20','g'],['Garbanzo Beans','85','g'],['Tahini Paste','85','g'],['Olive Oil Extra Virgin','57','g'],['Lime','1','each'],['Cumin Ground','4','g'],['Salt','1','g'],['Black Pepper','1','g']]},
+  camote_mousse:      {name:'Sweet Potato Mousse',         yield_oz:10, freq:'Quincenal',        storage:'🧊 Congelado 15d',  color:'var(--blue)',   colorBg:'var(--blue-bg)',
+    procedure:'Hervir el camote con canela, clavos, anis estrellado, azucar, soda de naranja y agua hasta muy tierno. Escurrir. Licuar hasta suave y cremoso. Enfriar completamente. Congelar en porciones.', procedure_en:'Boil sweet potato with cinnamon, cloves, star anise, sugar, orange soda and water until very tender. Drain. Blend until smooth and creamy. Cool completely. Freeze in portions.',
+    ingredients:[['Sweet Potato','283','g'],['Granulated Sugar','57','g'],['Orange Soda','425','g'],['Cinnamon Sticks','28','g'],['Cloves Whole','1','g'],['Water','425','g'],['Star Anise','1','g']]},
+  pico_gallo:         {name:'Pico de Gallo',               yield_oz:4,  freq:'3x semana',        storage:'❄️ Refri 7 días',   color:'var(--red)',    colorBg:'var(--red-bg)',
+    procedure:'Picar finamente el tomate plum, la cebolla roja y el cilantro. Combinar en un bowl con jugo de limon, sal y pimienta negra. Mezclar bien y dejar reposar 10 minutos antes de servir.', procedure_en:'Finely dice plum tomato, red onion and cilantro. Combine in a bowl with lime juice, salt and black pepper. Mix well and rest 10 minutes before serving.',
+    ingredients:[['Red Onion','57','g'],['Cilantro','3','g'],['Tomato Plum','43','g'],['Salt','1','g'],['Fresh Lime Juice','14','g'],['Black Pepper','1','g']]},
+  barley:             {name:'Cebada Cocida / Cooked Barley', yield_oz:10,  freq:'1x semana',        storage:'❄️ Refri 7 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+    procedure:'Enjuagar bien la cebada. Combinar con agua, sal y pimienta en una olla. Llevar a hervor, reducir fuego y cocinar 25-30 minutos hasta tierna. Escurrir. Enfriar antes de usar.', procedure_en:'Rinse barley well. Combine with water, salt and pepper in a pot. Bring to a boil, reduce heat and cook 25-30 minutes until tender. Drain. Cool before using.',
+    ingredients:[['Barley Pearled','227','g'],['Water','567','g'],['Salt','6','g'],['Black Pepper','3','g']]},
+  croqueta_kale:      {name:'Croquetas de Kale',           yield_each:12,  freq:'Mensual',          storage:'🧊 Congelado 30d',  color:'var(--green)',  colorBg:'var(--green-bg)',
+    procedure:'SUB-RECETA QUINOA (Ref.34): Enjuagar la quinoa. Combinar 32oz quinoa + 32oz agua + 1oz sal. Hervir, tapar y cocinar 15 min. Esponjar y enfriar. Rinde 74oz. CROQUETAS: Combinar 8oz quinoa cocida + kale picado + garbanzos aplastados + harina Maseca + comino + ajo sal. Mezclar. Formar bolitas. Freir en aceite de oliva 3-4 min por lado hasta dorado. Rinde 12 por lote.',
+    ingredients:[['Kale Green Clean','283','g'],['Pre-Cooked Quinoa','227','g'],['Garbanzo Beans','567','g'],['Corn Flour Maseca','340','g'],['Cumin Ground','9','g'],['Olive Oil Extra Virgin','57','g'],['Garlic Salt','28','g']]},
+  alitas_precocidas:  {name:'Alitas Precocidas (30 pcs)',  yield_each:1,   freq:'Mensual',          storage:'🧊 Congelado 15d',  color:'var(--green)',  colorBg:'var(--green-bg)',
+    procedure:'Sazonar alitas con sal, pimienta, ajo sal y aceite. Precocinar en horno a 375F por 20 min. Enfriar. Porcionar en bolsas de 30 piezas. Congelar. AL SERVICIO: freir directo del congelador a 350F por 8-10 min hasta crujiente.',
+    ingredients:[['Chicken Wings Jumbo CVP','30','each'],['Salt','14','g'],['Black Pepper','3','g'],['Garlic Salt','14','g'],['Olive Oil Extra Virgin','28','g']]},
+  pickled_eggplant:   {name:'Berenjena Encurtida / Pickled Eggplant', yield_oz:12,  freq:'Mensual',          storage:'❄️ Refri 30 días',  color:'var(--green)',  colorBg:'var(--green-bg)',
+procedure:'Cortar la berenjena en cubos de 1/2 pulgada. Combinar vinagre blanco, agua, sal, azucar y pimienta. Revolver. Agregar la berenjena, cubrir y refrigerar minimo 2 horas. Mantener sumergida en el liquido.',
+        ingredients:[['Eggplant','454','g'],['White Vinegar','227','g'],['Salt','14','g'],['Water','227','g'],['Granulated Sugar','85','g'],['Black Pepper','3','g']]},
+  pesto_tomato:       {name:'Pesto Tomate Rostizado / Roasted Tomatoes Pesto Sauce', yield_oz:10, freq:'Quincenal', storage:'❄️ Refri 15 días', color:'var(--blue)', colorBg:'var(--blue-bg)',
+        procedure:'Rostizar los tomates plum a 400F por 20-25 min hasta caramelizados. Licuar con tomates secos, pesto basil sin nueces, azucar, sal y pimienta hasta suave.',
+    ingredients:[['Tomato Plum','113','g'],['Sun-Dried Tomatoes','57','g'],['Granulated Sugar','14','g'],['Salt','3','g'],['Sauce Pesto Basil No Nuts','113','g'],['Black Pepper','3','g']]},
+  goat_cheese_rounds: {name:'Bolitas Queso Cabra',         yield_each:16,  freq:'Quincenal',        storage:'🧊 Congelado 15d',  color:'var(--blue)',   colorBg:'var(--blue-bg)',
+procedure:'PORCIÓN: 4 bolitas de 2oz por plato (8oz total) — va en las 3 versiones de Insalatta (sin carne, con pollo, con salmón).\n\nPRODUCCIÓN: Pesar el queso de cabra en porciones de 2oz. Formar bolitas. Pasar por harina → huevo batido → panko hasta cubrir bien. Congelar en bandeja plana hasta firmes (mínimo 1 hora). Empacar en bolsas por porciones de 4 bolitas. Rinde ~16 bolitas (4 porciones) por lote.\n\nAL SERVICIO: Freír directo del congelador en aceite caliente hasta dorado y crujiente, 3-4 min. Escurrir en papel. Servir inmediatamente.',
+        ingredients:[['Goat Cheese Log','227','g'],['All-Purpose Flour','85','g'],['Panko Bread Crumbs','85','g'],['Eggs','2','each']]},
+  vinagreta:          {name:'Vinagreta Ensalada / Salad Vinaigrette', yield_oz:6,  freq:'1x semana',        storage:'❄️ Refri 7 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+    procedure:'Batir vinagre de manzana, mostaza, sal y pimienta. Agregar lentamente el aceite de oliva mientras se bate hasta emulsionar. Agregar la miel. Ajustar sazon. Agitar bien antes de cada uso.',
+    ingredients:[['Olive Oil Extra Virgin','113','g'],['Apple Cider Vinegar','57','g'],['Salt','3','g'],['Black Pepper','1','g'],['Honey','43','g'],['Yellow Mustard','14','g']]},
+  pure_papa:          {name:'Puré de Papa',                yield_oz:52,    freq:'2x semana',        storage:'🧊 Congelado 7d',   color:'var(--amber)',  colorBg:'var(--amber-bg)',
+    procedure:'Pelar y cubear las papas Idaho. Hervir en agua salada con hoja de laurel 15-20 min hasta tiernas. Escurrir. Machacar en caliente con mantequilla, crema, leche, ajo, tomillo y romero hasta suave. Sazonar. Porcionar y congelar.',
+    ingredients:[['Idaho Potatoes','907','g'],['Heavy Whipping Cream 40%','227','g'],['Unsalted Butter','170','g'],['Garlic Whole Peeled','28','g'],['Fresh Thyme','14','g'],['Fresh Rosemary','14','g'],['Salt','14','g'],['Black Pepper','1','g'],['Whole Milk','113','g']]},
+  demiglace:          {name:'Demi-Glace',                  yield_oz:10,  freq:'Quincenal',        storage:'❄️ Refri 15 días',  color:'var(--blue)',   colorBg:'var(--blue-bg)',
+    procedure:'Combinar demi-glace, vino tinto, azucar y agua en una olla. Cocinar a fuego medio revolviendo hasta reducir y espesar. Sazonar si es necesario.',
+    ingredients:[['Demi-Glaze Brown Sauce','85','g'],['Red Wine','1','ml'],['Granulated Sugar','14','g'],['Water','340','g']]},
+  three_pep_sauce:    {name:'Salsa 3 Pimientas / Three Peppercorn Sauce', yield_oz:5,  freq:'1x semana',        storage:'❄️ Refri 7 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+    procedure:'Saltear la cebolla blanca en aceite de oliva hasta transparente. Agregar caldo de res y los tres pimientos (negro, verde, blanco). Reducir a la mitad. Agregar la crema y cocinar hasta espesar 3-5 min. Sazonar con sal.',
+    ingredients:[['Olive Oil Extra Virgin','21','g'],['Salt','3','g'],['Black Pepper crushed','3','g'],['Green Peppercorns','3','g'],['White Pepper Ground','3','g'],['White Onion','28','g'],['Beef Broth','57','g'],['Heavy Whipping Cream 40%','113','g']]},
+  red_onion_jam:      {name:'Mermelada de Cebolla Roja / Red Onion Jam', yield_oz:8, freq:'1x semana', storage:'❄️ Refri 7 días', color:'var(--teal)', colorBg:'var(--teal-bg)',
+        procedure:'Cortar la cebolla roja en juliana fina (media luna). Calentar el aceite de oliva + mantequilla a fuego medio-bajo. Agregar la cebolla con una pizca de sal — cocinar 15 min revolviendo hasta que ablande y empiece a dorar. Agregar el azúcar morena, vinagre balsámico y tomillo. Reducir fuego a LOW. Cocinar 20-25 min más revolviendo cada 3-4 min hasta que la mezcla esté oscura, pegajosa y con textura de mermelada. Ajustar sal. Enfriar completamente antes de almacenar. NOTAS: Si queda muy espesa, agregar 1-2 cucharadas de agua. Revisar color: debe ser marrón oscuro caoba, no negro. Rendimiento: ~227g (8 oz).', procedure_en:'Slice red onion into thin julienne. Heat olive oil + butter over medium-low heat. Add onion with a pinch of salt — cook 15 min stirring until softened and starting to brown. Add brown sugar, balsamic vinegar and thyme. Reduce to LOW. Cook 20-25 min more stirring every 3-4 min until dark, sticky and jam-like. Cool completely before storing. NOTE: If too thick, add 1-2 tbsp water. Color should be dark mahogany, not black. Yield: ~227g (8 oz).',
+    ingredients:[['Red Onion','454','g'],['Unsalted Butter','28','g'],['Olive Oil Extra Virgin','14','g'],['Brown Sugar','42','g'],['Balsamic Vinegar','28','g'],['Fresh Thyme','2','g'],['Salt','2','g']]},
+  coleslaw:           {name:'Coleslaw',                    yield_each:1,  freq:'1x semana',        storage:'❄️ Refri 7 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+    procedure:'Picar el repollo y rallar las zanahorias. Batir mayonesa, jugo de limon, mostaza, azucar y sal. Mezclar los vegetales en el aderezo. Refrigerar hasta usar.',
+    ingredients:[['Carrots','43','g'],['Green Cabbage Shred','43','g'],['Salt','3','g'],['Granulated Sugar','7','g'],['Mayonnaise Heavy Duty','57','g'],['Lime Juice','14','g'],['Yellow Mustard','7','g']]},
+  aioli_cilantro:     {name:'Aioli Cilantro y Ajo / Cilantro Garlic Aioli', yield_oz:132,   freq:'Quincenal',        storage:'❄️ Refri 15 días',  color:'var(--blue)',   colorBg:'var(--blue-bg)',
+    procedure:'Licuar el ajo y el cilantro con aceite de soya y agua hasta suave. Combinar con la mayonesa y sal. Batir hasta completamente incorporado. Refrigerar. Rinde 132oz por lote.',
+    ingredients:[['Mayonnaise Heavy Duty','3629','g'],['Soybean Oil','28','g'],['Garlic Whole Peeled','85','g'],['Salt','28','g'],['Cilantro','85','g'],['Water','57','g']]},
+  basil_mayo:         {name:'Mayo de Albahaca',            yield_oz:16,    freq:'1x semana',        storage:'❄️ Refri 7 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+    procedure:'Combinar mayonesa y pesto basil sin nueces en un bowl. Batir hasta suave. Sazonar con sal y pimienta al gusto. Refrigerar. Usar en pizzas, burgers o sandwiches.',
+    ingredients:[['Mayonnaise Heavy Duty','340','g'],['Sauce Pesto Basil','113','g']]},
+  pizza_dough:        {name:'Masa de Pizza',               yield_each:1,   freq:'Según demanda',    storage:'❄️ Refri 3 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+procedure:'SUB-RECETA POOLISH: Preparar el poolish mínimo 6 horas antes (ver receta Poolish). Rinde 405g por lote — usar el 30% del peso total de la masa.\n\nMASA DE PIZZA (por bola): Combinar 20oz (567g) harina 00 + 0.2oz levadura fresca + 0.02oz sal. Agregar 4oz poolish + 2oz aceite de oliva + 8oz agua. Mezclar hasta integrar. Amasar 5 min hasta suave y elástica. Fermentar 1 hora tapada. Desgasificar, porcionar en bolas. Refrigerar tapado máximo 3 días. Atemperar 30 min antes de estirar.',
+        ingredients:[['00 Pizza Bread Flour','567','g'],['Olive Oil Extra Virgin','57','g'],['Water','227','g'],['Poolish base','113','g'],['Salt','1','g'],['Fresh Compressed Yeast','6','g']]},
+  pollo_marinado:     {name:'Pollo Marinado / Beer-Braised Chicken', yield_oz:25,   freq:'Mensual',          storage:'❄️/🧊 Refri 7d · Congelado 1 mes', color:'var(--green)', colorBg:'var(--green-bg)',
+    procedure:'MARINADO: Picar el ajo. Combinar todos los ingredientes y mezclar bien. Rinde 25oz. APLICACION: Sumergir las pechugas minimo 30 min o toda la noche refrigerado. Produccion mensual, congelar en porciones. USOS: Dipsy Chicken (frito), Insalatta con Pollo (plancha), Mixed Grill (plancha). COCCION: Plancha 6-7 min por lado hasta 165F interno. Reposar 5 min antes de rebanar.',
+    ingredients:[['Garlic Whole Peeled','28','g'],['Salt','57','g'],['Black Pepper','1','g'],['Cumin Ground','7','g'],['MSG Seasoning','1','g'],['Dried Oregano','7','g'],['Fresh Rosemary','1','g'],['Brewlando Beer','567','g']]},
+  chimichurri_mayo:   {name:'Mayonesa de Chimichurri',    yield_oz:128,freq:'1x semana',        storage:'❄️ Refri 7 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+procedure:'Batir juntos mayonesa, chimichurri, jugo de limon, aceite de soya, salsa de soya, MSG, togarashi y sal hasta suave. Refrigerar. Rinde 128oz por lote.',
+        ingredients:[['Mayonnaise Heavy Duty','3629','g'],['Chimichurri Sauce','142','g'],['Fresh Lime Juice','113','g'],['Soybean Oil','85','g'],['Soy Sauce Low Sodium','28','g'],['MSG Seasoning','7','g'],['Togarashi','14','g'],['Salt','3','g']]},
+  chicharron:         {name:'Pork Belly / Chicharrón', yield_each:25, freq:'Mensual', storage:'❄️/🧊 Refri 7d · Congelado 1 mes', color:'var(--green)', colorBg:'var(--green-bg)',
+        procedure:'MARINAR: Marinar la panceta con limon, sal, ajo, hoisin, canela, anis estrellado, clavos, hoja de laurel y comino. Refrigerar 12-24 horas. HORNEAR: Colocar en bandeja al horno hasta tierna y cocida. Enfriar. PORCIONAR: Cortar en porciones de 6oz. Refrigerar 7 dias o congelar 1 mes. AL SERVICIO: Freir hasta dorado y crujiente 3-4 min. Escurrir. Rinde 25 porciones.',
+    ingredients:[['Pork Belly Skin Off','4536','g'],['Fresh Lime Juice base','85','g'],['Salt','71','g'],['Garlic Whole Peeled Fresh','28','g'],['Hoisin Sauce','283','g'],['Cinnamon Sticks','3','g'],['Star Anise','0.5','g'],['Cloves Whole','0.5','g'],['Bay Leaves','0.5','g'],['Cumin Ground','1','g'],['Water','198','g']]},
+  marinated_mushrooms:{name:'Champiñones Marinados / Marinated Mushrooms', yield_oz:8, freq:'1x semana',        storage:'❄️ Refri 7 días',   color:'var(--teal)',   colorBg:'var(--teal-bg)',
+procedure:'Cortar los champinones en laminas. Combinar con vinagre de manzana, jengibre, tomillo, romero, aceite de oliva, sal y pimienta. Mezclar. Marinar minimo 15 minutos antes de usar en ensaladas.',
+        ingredients:[['Mushroom Button','227','g'],['Ginger Ground','3','g'],['Salt','1','g'],['Black Pepper','1','g'],['Fresh Thyme','3','g'],['Fresh Rosemary','3','g'],['Apple Cider Vinegar','85','g'],['Olive Oil Extra Virgin','28','g']]},
+  crispy_onions:      {name:'Crispy Onions',              yield_oz:5,     freq:'Al momento',           storage:'🌡️ T. Ambiente 1d', color:'var(--amber)',  colorBg:'var(--amber-bg)',
+    procedure:'COMPRADO LISTO — Llegan del proveedor (Onion Rings Beer Battered 5/8 · Stock Code 5001). AL SERVICIO: freír 5 porciones por pedido en aceite caliente a 350°F por 3-4 min hasta dorado y crujiente. Escurrir en papel. Acompañar SIEMPRE con Stout Beer Onion Rings Sauce (~40ml por porción).',
+    ingredients:[['Red Onion','113','g'],['Corn Starch','28','g']]},
+  pickled_beet:       {name:'Remolacha Encurtida',        yield_oz:31.1,  freq:'Quincenal',        storage:'❄️ Refri 15 días',  color:'var(--blue)',   colorBg:'var(--blue-bg)',
+    procedure:'PENDIENTE DE DEFINIR — Se usará para la Vegan Burger. Usar remolacha en rodajas dulce (no avinagrada) del proveedor. No producir en cocina hasta confirmar receta final.',
+    ingredients:[['Red Beets','85','g'],['Salt','3','g'],['Water','397','g'],['White Vinegar','227','g'],['Granulated Sugar','170','g']]},
+  salsa_agridulce:    {name:'Salsa Agridulce / Sweet & Sour', yield_oz:35, freq:'1x semana', storage:'❄️ Refri 7 días', color:'var(--amber)', colorBg:'var(--amber-bg)',
+        procedure:'Combinar agua, anis estrellado, azucar, vinagre, jugo de limon, salsa de soya y togarashi. Llevar a hervor. Disolver maicena en agua fria y agregar revolviendo para espesar. Cocinar 5 min. Colar y enfriar.',
+    ingredients:[['Water','709','g'],['Star Anise','28','g'],['Granulated Sugar','283','g'],['White Vinegar','113','g'],['Fresh Lime Juice (BASE)','28','g'],['Soy Sauce Low Sodium','113','g'],['Corn Starch','35','g'],['Togarashi','14','g']]},
+  arroz:              {name:'Arroz Blanco / White Rice', yield_oz:270, freq:'Diario · Al momento', storage:'🌡️ T. Ambiente · usar inmediato', color:'var(--amber)', colorBg:'var(--amber-bg)',
+        procedure:'Calentar aceite en una olla. Saltear el ajo. Agregar el arroz y tostar 1-2 min. Agregar agua y sal. Llevar a hervor, tapar y cocinar 18 min hasta esponjoso. Reposar 5 min. Rinde 270oz cocido.',
+    ingredients:[['Jasmine Rice','850','g'],['Soybean Oil','113','g'],['Garlic Whole Peeled Fresh','85','g'],['Salt','57','g'],['Water','1276','g']]},
+  guacamole_base:     {name:'Guacamole',                  yield_oz:5.06,  freq:'Según demanda',    storage:'❄️ Refri 1-2 días', color:'var(--teal)',   colorBg:'var(--teal-bg)',
+    procedure:'COMPRADO LISTO — Llega del proveedor. No se produce en cocina. Refrigerar al recibir. Vida util 2 dias. Usar directo del recipiente del proveedor.',
+    ingredients:[['Avocado Hass','3','each'],['Salt','1','g'],['Black Pepper','1','g'],['Fresh Lime Juice','28','g'],['Olive Oil Extra Virgin','28','g']]},
+};
+
+function renderRecetas(totals) {
+  const isES = lang === 'es';
+  let html = '';
+
+  // Guard: if no totals provided or empty, show instruction
+  if (!totals || Object.keys(totals).length === 0) {
+    document.getElementById('rec-results').style.display = 'none';
+    document.getElementById('rec-placeholder').style.display = 'block';
+    return;
+  }
+
+  // Legend
+  html += `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;font-size:11px">
+    <span style="padding:3px 10px;border-radius:20px;background:var(--green-bg);color:var(--green);font-weight:600">🟢 Mensual</span>
+    <span style="padding:3px 10px;border-radius:20px;background:var(--blue-bg);color:var(--blue);font-weight:600">🔵 Quincenal</span>
+    <span style="padding:3px 10px;border-radius:20px;background:var(--amber-bg);color:var(--amber);font-weight:600">🟡 2x semana</span>
+    <span style="padding:3px 10px;border-radius:20px;background:var(--red-bg);color:var(--red);font-weight:600">🔴 3x semana</span>
+    <span style="padding:3px 10px;border-radius:20px;background:var(--teal-bg);color:var(--teal);font-weight:600">🟢 1x semana</span>
+    <button class="btn btn-secondary" style="margin-left:auto;font-size:11px;padding:5px 12px" onclick="window.print()">⎙ ${isES?'Imprimir recetas':'Print recipes'}</button>
+  </div>`;
+
+  // For each base that has a need
+  // totals structure: {key: {oz:N, each:N}}
+  const flatTotals = {};
+  Object.entries(totals).forEach(([key, val]) => {
+    if (typeof val === 'object') {
+      flatTotals[key] = (val.each > 0) ? val.each : val.oz;
+    } else {
+      flatTotals[key] = parseFloat(val) || 0;
+    }
+  });
+
+  Object.entries(flatTotals).sort((a,b) => b[1]-a[1]).forEach(([key, totalNeeded]) => {
+    const recipe = BASE_RECIPES[key];
+    if (!recipe || !recipe.ingredients || totalNeeded === 0) return;
+
+    // Calculate lotes
+    const safeNeeded = parseFloat(totalNeeded) || 0;
+    let lotes, yieldStr, unitStr;
+    if (recipe.yield_oz) {
+      lotes = Math.max(1, Math.ceil(safeNeeded / recipe.yield_oz));
+      yieldStr = `~${recipe.yield_oz} oz ${lang==='en'?'per batch':'por lote'}`;
+      unitStr = `${Math.round(safeNeeded)} oz ${lang==='en'?'needed':'necesarias'}`;
+    } else if (recipe.yield_each) {
+      lotes = Math.max(1, Math.ceil(safeNeeded / recipe.yield_each));
+      yieldStr = `${recipe.yield_each} ${lang==='en'?'portions per batch':'porciones por lote'}`;
+      unitStr = `${Math.round(safeNeeded)} ${lang==='en'?'portions needed':'porciones necesarias'}`;
+    } else {
+      lotes = Math.round(safeNeeded) || 1;
+      yieldStr = lang==='en'?'1 per recipe':'1 por receta';
+      unitStr = `${Math.round(safeNeeded)} ${lang==='en'?'needed':'necesarios'}`;
+    }
+
+    html += `<div class="card" style="margin-bottom:10px;border-left:4px solid ${recipe.color}">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <div style="font-size:15px;font-weight:600;color:var(--text);flex:1">${lang==='en'?(recipe.name_en||recipe.name):(recipe.name_es||recipe.name)}</div>
+        <span style="padding:3px 10px;border-radius:20px;background:${recipe.colorBg};color:${recipe.color};font-size:11px;font-weight:600">${recipe.freq}</span>
+        <span style="padding:3px 10px;border-radius:20px;background:var(--surface2);color:var(--text2);font-size:11px">${recipe.storage}</span>
+      </div>
+      <div style="display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap">
+        <div style="background:var(--surface2);border-radius:8px;padding:8px 14px;text-align:center">
+          <div style="font-size:20px;font-weight:600;font-family:var(--mono);color:${recipe.color}">${isNaN(lotes)?'—':lotes}</div>
+          <div style="font-size:10px;color:var(--text3)">${lang==='en'?'Batches':'Lotes'}</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:8px 14px;text-align:center">
+          <div style="font-size:20px;font-weight:600;font-family:var(--mono);color:var(--text)">${isNaN(safeNeeded)||safeNeeded===0?'—':Math.round(safeNeeded)}</div>
+          <div style="font-size:10px;color:var(--text3)">${recipe.yield_oz?(lang==='en'?'oz needed':'oz necesarias'):(lang==='en'?'portions needed':'porciones necesarias')}</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:8px 14px;flex:1">
+          <div style="font-size:11px;color:var(--text3)">${lang==='en'?'Yield per batch':'Rendimiento por lote'}</div>
+          <div style="font-size:12px;font-weight:500;color:var(--text);margin-top:2px">${yieldStr}</div>
+        </div>
+      </div>
+      <table class="result-table">
+        <thead><tr>
+          <th style="width:40%">${isES?'Ingrediente':'Ingredient'}</th>
+          <th>${isES?'Por lote':'Per batch'}</th>
+          <th>Unidad</th>
+          <th style="background:var(--amber-bg);color:var(--amber)">${isES?'Total x '+lotes+' lotes':'Total x '+lotes+' batches'}</th>
+        </tr></thead>
+        <tbody>`;
+    recipe.ingredients.forEach(([ingr, amt, unit], idx) => {
+      const amtNum = parseFloat(amt) || 0;
+      const safeL = isNaN(lotes) ? 1 : lotes;
+      const totalAmt = amtNum > 0 ? Math.round(amtNum * safeL * 100) / 100 : amt + '×' + safeL;
+      const bg = idx % 2 === 0 ? '' : 'background:var(--surface2)';
+      html += `<tr style="${bg}">
+        <td style="font-weight:500">${ingr}</td>
+        <td style="font-family:var(--mono);text-align:center">${amt}</td>
+        <td style="text-align:center;color:var(--text3)">${unit}</td>
+        <td style="font-family:var(--mono);font-weight:700;text-align:center;background:var(--amber-bg);color:var(--amber)">${totalAmt}</td>
+      </tr>`;
+    });
+    html += `</tbody></table>`;
+
+    // Procedure section below ingredients
+    if ((lang==='en'?(recipe.procedure_en||recipe.procedure):recipe.procedure)) {
+      html += `<div style="margin-top:14px;padding:14px 16px;background:var(--surface2);border-radius:10px;border-left:4px solid ${recipe.color}">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:10px">📋 Procedimiento / Procedure</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.75">${(lang==='en'?(recipe.procedure_en||recipe.procedure):recipe.procedure)}</div>
+      </div>`;
+    }
+
+    html += `</div>`;
+  });
+
+  document.getElementById('rec-results').innerHTML = html;
+  document.getElementById('rec-results').style.display = 'block';
+  document.getElementById('rec-placeholder').style.display = 'none';
+}
+
+
+
+// ══════════════════════════════════════════════
+// PP PROGRESO SEMANAL
+// ══════════════════════════════════════════════
+function renderPPProgreso() {
+  const data = getBitacora();
+  const panel = document.getElementById('pp-progreso');
+  const lista = document.getElementById('pp-lista-producido');
+  if (!panel || !lista) return;
+
+  if (data.length === 0) { panel.style.display = 'none'; return; }
+  panel.style.display = 'block';
+
+  // Aggregate produced by base key
+  const producido = {};
+  data.forEach(e => {
+    if (!producido[e.baseKey]) producido[e.baseKey] = { name: e.baseName, total: 0, unit: e.unit, entries: [] };
+    producido[e.baseKey].total += e.qty;
+    producido[e.baseKey].entries.push(e);
+  });
+
+  // Get needed totals from last calculation
+  const needed = window._lastNeeded || {};
+
+  // Calculate global %
+  let totalNeed = 0, totalDone = 0;
+  Object.entries(producido).forEach(([key, v]) => {
+    const need = needed[key] || 0;
+    totalNeed += need;
+    totalDone += Math.min(v.total, need || v.total);
+  });
+  const globalPct = totalNeed > 0 ? Math.round((totalDone / totalNeed) * 100) : 100;
+
+  // Update global bar and badge
+  const bar = document.getElementById('pp-bar-global');
+  const badge = document.getElementById('pp-pct-badge');
+  if (bar) { bar.style.width = Math.min(globalPct,100) + '%'; bar.style.background = globalPct>=100?'var(--green)':globalPct>=50?'var(--teal)':'var(--amber)'; }
+  if (badge) { badge.textContent = globalPct + '%'; badge.style.color = globalPct>=100?'var(--green)':globalPct>=50?'var(--teal)':'var(--amber)'; }
+
+  // Render list — only produced items, collapsible
+  let html = '';
+  Object.entries(producido).sort((a,b) => b[1].total - a[1].total).forEach(([key, v]) => {
+    const need = needed[key] || 0;
+    const pct  = need > 0 ? Math.round((v.total / need) * 100) : 100;
+    const done = pct >= 100;
+    const barColor = done ? 'var(--green)' : pct >= 50 ? 'var(--teal)' : 'var(--amber)';
+    const textColor = done ? 'var(--green)' : pct >= 50 ? 'var(--teal)' : 'var(--amber)';
+    const id = 'pp-detail-' + key;
+
+    // Format entries for detail
+    const detailRows = v.entries.map(e => {
+      const d = new Date(e.fecha+'T12:00:00');
+      const day = d.toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'});
+      return `<div style="display:flex;gap:8px;align-items:center;padding:4px 0;border-bottom:0.5px solid var(--border);font-size:11px;color:var(--text2)">
+        <span style="min-width:80px">${day}</span>
+        <span style="font-family:var(--mono);font-weight:600;color:var(--text)">${e.qty} ${e.unit}</span>
+        <span style="color:var(--text3)">${e.turno}</span>
+        <span>${e.resp}</span>
+        ${e.notas?'<span style="color:var(--text3);font-style:italic">'+e.notas+'</span>':''}
+      </div>`;
+    }).join('');
+
+    html += `
+    <div style="margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:10px;cursor:pointer" onclick="toggleDetail('${id}')">
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <span style="font-size:13px;font-weight:600;color:var(--text)">${v.name}</span>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-family:var(--mono);font-size:13px;font-weight:600;color:${textColor}">${v.total} ${v.unit}</span>
+              ${need>0?`<span style="font-size:11px;color:var(--text3)">de ${need}</span>`:''}
+              <span style="font-size:12px;font-weight:700;color:${textColor}">${pct}%</span>
+              ${done?'<span style="font-size:14px">✅</span>':''}
+              <span style="font-size:11px;color:var(--text3)">▾</span>
+            </div>
+          </div>
+          <div style="background:var(--surface2);border-radius:20px;height:6px;overflow:hidden">
+            <div style="height:100%;border-radius:20px;background:${barColor};width:${Math.min(pct,100)}%;transition:width .4s ease"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Collapsible detail -->
+      <div id="${id}" style="display:none;margin-top:6px;padding:8px 12px;background:var(--surface2);border-radius:8px;border-left:3px solid ${barColor}">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Registros (${v.entries.length})</div>
+        ${detailRows}
+        <div style="margin-top:6px;padding-top:6px;font-size:12px;font-weight:600;color:${textColor}">Total producido: ${v.total} ${v.unit} (${pct}%${need>0?' de '+need+' necesarios':''})</div>
+      </div>
+    </div>`;
+  });
+
+  lista.innerHTML = html;
+}
+
+function toggleDetail(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// Store needed totals when calculating
+const _origCalcular = calcular;
+
+// ══════════════════════════════════════════════
+// BITÁCORA DE PRODUCCIÓN
+// ══════════════════════════════════════════════
+const BIT_KEY = 'bruder_bitacora_v1';
+
+function getBitacora() {
+  try { return JSON.parse(localStorage.getItem(BIT_KEY) || '[]'); } catch { return []; }
+}
+function saveBitacora(data) {
+  try { localStorage.setItem(BIT_KEY, JSON.stringify(data)); } catch {}
+}
+
+function agregarBitacora() {
+  const fecha   = document.getElementById('bit-fecha').value;
+  const resp    = document.getElementById('bit-resp').value.trim();
+  const turno   = document.getElementById('bit-turno').value;
+  const baseKey = document.getElementById('bit-base').value;
+  const qty     = parseFloat(document.getElementById('bit-qty').value) || 0;
+  const unit    = document.getElementById('bit-unit').value;
+  const notas   = document.getElementById('bit-notas').value.trim();
+
+  if (!fecha) { alert('Selecciona una fecha'); return; }
+  if (!baseKey) { alert('Selecciona una base'); return; }
+  if (!qty) { alert('Ingresa una cantidad'); return; }
+  if (!resp) { alert('Ingresa el responsable'); return; }
+
+  const baseName = document.getElementById('bit-base').selectedOptions[0].text;
+  const entry = { id: Date.now(), fecha, resp, turno, baseKey, baseName, qty, unit, notas };
+
+  const data = getBitacora();
+  data.push(entry);
+  saveBitacora(data);
+  renderBitacora();
+  limpiarBitacoraForm();
+
+  // Flash confirmation
+  const btn = document.querySelector('[onclick="agregarBitacora()"]');
+  const orig = btn.textContent;
+  btn.textContent = '✓ Registrado!';
+  btn.style.background = 'var(--teal)';
+  setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2000);
+}
+
+function renderBitacora() {
+  renderPPProgreso();
+  const data = getBitacora();
+  const ac = document.getElementById('bit-acumulado');
+  const tabla = document.getElementById('bit-tabla');
+  if (!ac || !tabla) return;
+
+  if (data.length === 0) { ac.style.display = 'none'; return; }
+  ac.style.display = 'block';
+
+  // Group by date
+  const byDate = {};
+  data.forEach(e => {
+    if (!byDate[e.fecha]) byDate[e.fecha] = [];
+    byDate[e.fecha].push(e);
+  });
+
+  // Acumulado por base
+  const acumByBase = {};
+  data.forEach(e => {
+    if (!acumByBase[e.baseKey]) acumByBase[e.baseKey] = { name: e.baseName, total: 0, unit: e.unit, entries: 0 };
+    acumByBase[e.baseKey].total += e.qty;
+    acumByBase[e.baseKey].entries++;
+  });
+
+  const dates = Object.keys(byDate).sort();
+  document.getElementById('bit-semana-label').textContent =
+    `${data.length} registros · ${dates.length} días · ${Object.keys(acumByBase).length} bases producidas`;
+
+  let html = '';
+
+  // Summary boxes
+  html += `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">`;
+  Object.entries(acumByBase).sort((a,b)=>b[1].total-a[1].total).forEach(([key,v]) => {
+    html += `<div style="background:var(--teal-bg);border-radius:8px;padding:8px 12px;min-width:120px">
+      <div style="font-size:10px;color:var(--teal);font-weight:600;margin-bottom:2px">${v.name}</div>
+      <div style="font-size:18px;font-weight:700;font-family:var(--mono);color:var(--text)">${v.total}</div>
+      <div style="font-size:10px;color:var(--text3)">${v.unit} · ${v.entries} lotes</div>
+    </div>`;
+  });
+  html += '</div>';
+
+  // Day by day log
+  dates.reverse().forEach(fecha => {
+    const entries = byDate[fecha];
+    const d = new Date(fecha + 'T12:00:00');
+    const dayStr = d.toLocaleDateString('es-CO', { weekday:'long', day:'numeric', month:'long' });
+    html += `<div style="margin-bottom:12px">
+      <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;padding:6px 0;border-bottom:1px solid var(--border);margin-bottom:6px">${dayStr}</div>
+      <table class="result-table"><thead><tr>
+        <th>Base Producida</th><th>Cantidad</th><th>Unidad</th><th>Turno</th><th>Responsable</th><th>Notas</th><th></th>
+      </tr></thead><tbody>`;
+    entries.forEach(e => {
+      html += `<tr>
+        <td><strong>${e.baseName}</strong></td>
+        <td style="font-family:var(--mono);font-weight:600;text-align:center;color:var(--teal)">${e.qty}</td>
+        <td style="text-align:center;color:var(--text3)">${e.unit}</td>
+        <td style="text-align:center"><span class="badge badge-blue">${e.turno}</span></td>
+        <td style="color:var(--text2)">${e.resp}</td>
+        <td style="color:var(--text3);font-size:12px">${e.notas||'—'}</td>
+        <td style="text-align:center"><button onclick="eliminarEntry(${e.id})" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px" title="Eliminar">✕</button></td>
+      </tr>`;
+    });
+    html += '</tbody></table></div>';
+  });
+
+  tabla.innerHTML = html;
+}
+
+function eliminarEntry(id) {
+  if (!confirm('¿Eliminar este registro?')) return;
+  const data = getBitacora().filter(e => e.id !== id);
+  saveBitacora(data);
+  renderBitacora();
+}
+
+function limpiarBitacora() {
+  saveBitacora([]);
+  renderBitacora();
+}
+
+function limpiarBitacoraForm() {
+  document.getElementById('bit-base').value = '';
+  document.getElementById('bit-qty').value = '';
+  document.getElementById('bit-notas').value = '';
+}
+
+function exportarBitacora() {
+  const data = getBitacora();
+  if (!data.length) return;
+  const lines = ['📝 BRUDER — BITÁCORA DE PRODUCCIÓN', '='.repeat(50)];
+  const byDate = {};
+  data.forEach(e => { if (!byDate[e.fecha]) byDate[e.fecha] = []; byDate[e.fecha].push(e); });
+  Object.keys(byDate).sort().forEach(fecha => {
+    lines.push('\n' + fecha);
+    byDate[fecha].forEach(e => {
+      lines.push(`  • ${e.baseName}: ${e.qty} ${e.unit} | ${e.turno} | ${e.resp}${e.notas?' | '+e.notas:''}`);
+    });
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(() => alert('¡Copiado! Pega en WhatsApp o email.'));
+}
+
+// Set today's date by default
+document.addEventListener('DOMContentLoaded', () => {
+  const fechaEl = document.getElementById('bit-fecha');
+  if (fechaEl) fechaEl.value = new Date().toISOString().split('T')[0];
+  renderBitacora();
+  renderPPProgreso();
+});
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+buildInputs();
+</script>
+<!-- ══ ADMIN PANE ══ -->
+<div id="pane-admin" style="display:none">
+
+<!-- Admin Login Screen -->
+<div id="admin-login" class="card">
+  <div class="card-title">🔐 Admin Access</div>
+  <div class="card-sub">Bruder Production Manager · Restricted access</div>
+  <div style="max-width:320px;margin:20px auto">
+    <div style="margin-bottom:12px">
+      <label style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Password</label>
+      <input type="password" id="admin-pw-input" placeholder="Enter admin password"
+        style="width:100%;padding:12px 14px;border:0.5px solid var(--border2);border-radius:10px;font-family:var(--font);font-size:15px;color:var(--text);background:var(--surface2);outline:none"
+        onkeydown="if(event.key==='Enter')checkAdminPw()">
+    </div>
+    <div id="admin-pw-error" style="display:none;color:var(--red);font-size:12px;margin-bottom:10px;padding:8px 12px;background:var(--red-bg);border-radius:8px">❌ Incorrect password</div>
+    <button onclick="checkAdminPw()" style="width:100%;padding:13px;border-radius:10px;border:none;background:var(--amber);color:#fff;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer">
+      🔐 Enter Admin Panel
+    </button>
+    <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--text3)">Contact Hector or Daniel to request access</div>
+  </div>
+</div>
+
+<!-- Admin Panel (shown after login) -->
+<div id="admin-panel" style="display:none">
+
+  <!-- Admin header -->
+  <div class="card" style="margin-bottom:10px;background:var(--amber-bg);border-color:var(--amber-dim)">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:14px;font-weight:600;color:var(--amber)">🔐 Admin Panel — Bruder Production</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">Edit recipes, prices and ingredients · Changes save automatically</div>
+      </div>
+      <button onclick="adminLogout()" style="padding:7px 14px;border-radius:8px;border:0.5px solid var(--amber-dim);background:var(--surface);color:var(--amber);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)">
+        Log out
+      </button>
+    </div>
+  </div>
+
+  <!-- Admin tabs -->
+  <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+    <button class="btn btn-primary" id="atab-recipes" onclick="showAdminTab('recipes',this)">📋 Edit Recipes</button>
+    <button class="btn btn-secondary" id="atab-prices" onclick="showAdminTab('prices',this)">💰 Menu Prices</button>
+    <button class="btn btn-secondary" id="atab-cheney" onclick="showAdminTab('cheney',this)">📦 Cheney Prices</button>
+    <button class="btn btn-secondary" id="atab-pw" onclick="showAdminTab('pw',this)">🔑 Change Password</button>
+  </div>
+
+  <!-- RECIPES EDITOR -->
+  <div id="admin-recipes" style="display:block">
+    <div class="card-sub" style="margin-bottom:10px">Edit yield, storage and ingredients for each prep recipe. Changes apply immediately.</div>
+    <div id="admin-recipe-list"></div>
+  </div>
+
+  <!-- MENU PRICES EDITOR -->
+  <div id="admin-prices" style="display:none">
+    <div class="card-sub" style="margin-bottom:10px">Update menu sale prices to keep food cost % accurate.</div>
+    <div id="admin-menu-prices-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn btn-primary" onclick="saveMenuPrices()">💾 Save Menu Prices</button>
+      <button class="btn btn-secondary" onclick="resetMenuPrices()">↺ Reset to Default</button>
+    </div>
+  </div>
+
+  <!-- CHENEY PRICES EDITOR -->
+  <div id="admin-cheney" style="display:none">
+    <div class="card-sub" style="margin-bottom:10px">Update Cheney Brothers prices when invoices change. Rep: Carlos Alarcón · 019139</div>
+    <div id="admin-cheney-grid"></div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn btn-primary" onclick="saveCheneyPrices()">💾 Save Cheney Prices</button>
+      <button class="btn btn-secondary" onclick="resetCheneyPrices()">↺ Reset to Default</button>
+    </div>
+  </div>
+
+  <!-- CHANGE PASSWORD -->
+  <div id="admin-pw" style="display:none">
+    <div class="card" style="max-width:360px">
+      <div class="card-title">🔑 Change Admin Password</div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+        <div>
+          <label style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Current Password</label>
+          <input type="password" id="pw-current" style="width:100%;padding:11px 13px;border:0.5px solid var(--border2);border-radius:9px;font-family:var(--font);font-size:14px;background:var(--surface2);outline:none">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">New Password</label>
+          <input type="password" id="pw-new" style="width:100%;padding:11px 13px;border:0.5px solid var(--border2);border-radius:9px;font-family:var(--font);font-size:14px;background:var(--surface2);outline:none">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Confirm New Password</label>
+          <input type="password" id="pw-confirm" style="width:100%;padding:11px 13px;border:0.5px solid var(--border2);border-radius:9px;font-family:var(--font);font-size:14px;background:var(--surface2);outline:none">
+        </div>
+        <div id="pw-msg" style="display:none;font-size:12px;padding:8px 12px;border-radius:8px"></div>
+        <button onclick="changeAdminPw()" style="padding:12px;border-radius:9px;border:none;background:var(--amber);color:#fff;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer">
+          Update Password
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /admin-panel -->
+</div><!-- /pane-admin -->
+
+<script>
+// ══════════════════════════════════════════════
+// ADMIN SYSTEM
+// ══════════════════════════════════════════════
+const ADMIN_PW_KEY = 'bruder_admin_pw';
+const ADMIN_SESSION_KEY = 'bruder_admin_session';
+const RECIPE_OVERRIDES_KEY = 'bruder_recipe_overrides';
+const MENU_PRICE_OVERRIDES_KEY = 'bruder_menu_price_overrides';
+const CHENEY_PRICE_OVERRIDES_KEY = 'bruder_cheney_price_overrides';
+const DEFAULT_ADMIN_PW = 'Bruder2025!';
+
+function getAdminPw() {
+  return localStorage.getItem(ADMIN_PW_KEY) || DEFAULT_ADMIN_PW;
+}
+
+function checkAdminPw() {
+  const input = document.getElementById('admin-pw-input').value;
+  const errEl = document.getElementById('admin-pw-error');
+  if (input === getAdminPw()) {
+    localStorage.setItem(ADMIN_SESSION_KEY, new Date().toDateString());
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    buildAdminRecipes();
+    buildAdminMenuPrices();
+    buildAdminCheneyPrices();
+    errEl.style.display = 'none';
+  } else {
+    errEl.style.display = 'block';
+    errEl.textContent = '❌ Incorrect password — contact Hector or Daniel';
+    document.getElementById('admin-pw-input').value = '';
+  }
+}
+
+function adminLogout() {
+  localStorage.removeItem(ADMIN_SESSION_KEY);
+  document.getElementById('admin-login').style.display = 'block';
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('admin-pw-input').value = '';
+}
+
+function showAdminTab(tab, btn) {
+  ['recipes','prices','cheney','pw'].forEach(t => {
+    document.getElementById('admin-'+t).style.display = t===tab?'block':'none';
+    const b = document.getElementById('atab-'+t);
+    if(b){ b.className = t===tab?'btn btn-primary':'btn btn-secondary'; }
+  });
+}
+
+function changeAdminPw() {
+  const cur = document.getElementById('pw-current').value;
+  const nw  = document.getElementById('pw-new').value;
+  const con = document.getElementById('pw-confirm').value;
+  const msg = document.getElementById('pw-msg');
+  if (cur !== getAdminPw()) {
+    msg.style.display='block';msg.style.background='var(--red-bg)';msg.style.color='var(--red)';
+    msg.textContent='❌ Current password incorrect'; return;
+  }
+  if (nw.length < 6) {
+    msg.style.display='block';msg.style.background='var(--red-bg)';msg.style.color='var(--red)';
+    msg.textContent='❌ New password must be at least 6 characters'; return;
+  }
+  if (nw !== con) {
+    msg.style.display='block';msg.style.background='var(--red-bg)';msg.style.color='var(--red)';
+    msg.textContent='❌ Passwords do not match'; return;
+  }
+  localStorage.setItem(ADMIN_PW_KEY, nw);
+  msg.style.display='block';msg.style.background='var(--teal-bg)';msg.style.color='var(--teal)';
+  msg.textContent='✅ Password updated successfully';
+  document.getElementById('pw-current').value='';
+  document.getElementById('pw-new').value='';
+  document.getElementById('pw-confirm').value='';
+}
+
+// ── Recipe Editor ──
+function getRecipeOverrides() {
+  try { return JSON.parse(localStorage.getItem(RECIPE_OVERRIDES_KEY)||'{}'); } catch { return {}; }
+}
+function saveRecipeOverrides(data) {
+  try { localStorage.setItem(RECIPE_OVERRIDES_KEY, JSON.stringify(data)); } catch {}
+}
+
+function buildAdminRecipes() {
+  const overrides = getRecipeOverrides();
+  const container = document.getElementById('admin-recipe-list');
+  let html = '';
+  Object.entries(BASE_RECIPES).forEach(([key, recipe]) => {
+    const ov = overrides[key] || {};
+    const yieldVal = ov.yield_oz !== undefined ? ov.yield_oz : (recipe.yield_oz || recipe.yield_each || 1);
+    const yieldType = recipe.yield_oz ? 'oz' : 'each';
+    const nameDisplay = recipe.name_en || recipe.name_es || recipe.name;
+    html += `<div class="card" style="margin-bottom:8px;border-left:4px solid ${recipe.color}">
+      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">${nameDisplay}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div>
+          <label style="font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px">Yield (${yieldType})</label>
+          <input type="number" id="recipe-yield-${key}" value="${yieldVal}" min="0" step="0.5"
+            style="width:100%;padding:8px 10px;border:0.5px solid var(--border2);border-radius:8px;font-family:var(--mono);font-size:13px;background:var(--surface2);outline:none"
+            onchange="updateRecipeOverride('${key}','yield',this.value,'${yieldType}')">
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px">Freq / Storage</label>
+          <input type="text" id="recipe-freq-${key}" value="${ov.freq||recipe.freq||''}"
+            style="width:100%;padding:8px 10px;border:0.5px solid var(--border2);border-radius:8px;font-family:var(--font);font-size:12px;background:var(--surface2);outline:none"
+            onchange="updateRecipeOverride('${key}','freq',this.value,'text')">
+        </div>
+      </div>
+      <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">Ingredients</div>
+      <div id="recipe-ingr-${key}">`;
+    recipe.ingredients.forEach(([ingr, amt, unit], idx) => {
+      const ovAmt = ov.ingredients && ov.ingredients[idx] ? ov.ingredients[idx] : amt;
+      html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+        <div style="flex:1;font-size:12px;color:var(--text2)">${ingr}</div>
+        <input type="number" id="ingr-${key}-${idx}" value="${ovAmt}" min="0" step="0.5"
+          style="width:70px;padding:6px 8px;border:0.5px solid var(--border2);border-radius:6px;font-family:var(--mono);font-size:12px;text-align:center;background:var(--surface2);outline:none"
+          onchange="updateIngrOverride('${key}',${idx},this.value)">
+        <div style="font-size:11px;color:var(--text3);width:24px">${unit}</div>
+      </div>`;
+    });
+    html += `</div>
+      <button onclick="resetRecipeOverride('${key}')" style="margin-top:8px;padding:5px 12px;border-radius:6px;border:0.5px solid var(--border2);background:var(--surface2);color:var(--text2);font-size:11px;cursor:pointer;font-family:var(--font)">
+        ↺ Reset to original
+      </button>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function updateRecipeOverride(key, field, value, type) {
+  const ov = getRecipeOverrides();
+  if (!ov[key]) ov[key] = {};
+  if (field === 'yield') {
+    if (type === 'oz') ov[key].yield_oz = parseFloat(value);
+    else ov[key].yield_each = parseFloat(value);
+  } else {
+    ov[key][field] = value;
+  }
+  saveRecipeOverrides(ov);
+  // Apply to BASE_RECIPES live
+  if (field === 'yield') {
+    if (type === 'oz') BASE_RECIPES[key].yield_oz = parseFloat(value);
+    else BASE_RECIPES[key].yield_each = parseFloat(value);
+  } else if (field === 'freq') {
+    BASE_RECIPES[key].freq = value;
+  }
+}
+
+function updateIngrOverride(key, idx, value) {
+  const ov = getRecipeOverrides();
+  if (!ov[key]) ov[key] = {};
+  if (!ov[key].ingredients) ov[key].ingredients = {};
+  ov[key].ingredients[idx] = value;
+  saveRecipeOverrides(ov);
+  // Update BASE_RECIPES live
+  if (BASE_RECIPES[key] && BASE_RECIPES[key].ingredients[idx]) {
+    BASE_RECIPES[key].ingredients[idx][1] = value;
+  }
+}
+
+function resetRecipeOverride(key) {
+  if (!confirm('Reset ' + (BASE_RECIPES[key]?.name_en || key) + ' to original values?')) return;
+  const ov = getRecipeOverrides();
+  delete ov[key];
+  saveRecipeOverrides(ov);
+  buildAdminRecipes();
+}
+
+// Load recipe overrides on startup
+(function applyRecipeOverrides() {
+  const ov = getRecipeOverrides();
+  Object.entries(ov).forEach(([key, override]) => {
+    if (!BASE_RECIPES[key]) return;
+    if (override.yield_oz !== undefined) BASE_RECIPES[key].yield_oz = override.yield_oz;
+    if (override.yield_each !== undefined) BASE_RECIPES[key].yield_each = override.yield_each;
+    if (override.freq) BASE_RECIPES[key].freq = override.freq;
+    if (override.ingredients) {
+      Object.entries(override.ingredients).forEach(([idx, val]) => {
+        if (BASE_RECIPES[key].ingredients[idx]) BASE_RECIPES[key].ingredients[idx][1] = val;
+      });
+    }
+  });
+})();
+
+// ── Menu Price Editor ──
+function getMenuPriceOverrides() {
+  try { return JSON.parse(localStorage.getItem(MENU_PRICE_OVERRIDES_KEY)||'{}'); } catch { return {}; }
+}
+function saveMenuPriceOverrides(data) {
+  try { localStorage.setItem(MENU_PRICE_OVERRIDES_KEY, JSON.stringify(data)); } catch {}
+}
+
+function buildAdminMenuPrices() {
+  const ov = getMenuPriceOverrides();
+  const grid = document.getElementById('admin-menu-prices-grid');
+  let html = '';
+  Object.entries(MENU_PRICES).forEach(([key, d]) => {
+    const menuItem = Object.values(MENU).flat().find(m=>m.key===key);
+    const name = menuItem ? (menuItem.en || menuItem.es || key) : key;
+    const price = ov[key]?.price !== undefined ? ov[key].price : d.price;
+    const cost  = ov[key]?.cost  !== undefined ? ov[key].cost  : d.cost;
+    const fc = ((cost/price)*100).toFixed(1);
+    const fcColor = parseFloat(fc)<=28?'var(--teal)':parseFloat(fc)<=33?'var(--amber)':'var(--red)';
+    html += `<div class="card" style="padding:12px">
+      <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px">${name}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div>
+          <label style="font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;display:block;margin-bottom:3px">Sale Price $</label>
+          <input type="number" id="mp-price-${key}" value="${price}" min="0" step="0.50"
+            style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:6px;font-family:var(--mono);font-size:13px;background:var(--surface2);outline:none"
+            oninput="updateFCPreview('${key}')">
+        </div>
+        <div>
+          <label style="font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;display:block;margin-bottom:3px">Ingr. Cost $</label>
+          <input type="number" id="mp-cost-${key}" value="${cost}" min="0" step="0.25"
+            style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:6px;font-family:var(--mono);font-size:13px;background:var(--surface2);outline:none"
+            oninput="updateFCPreview('${key}')">
+        </div>
+      </div>
+      <div style="margin-top:6px;font-size:11px;font-family:var(--mono);font-weight:600;color:${fcColor}" id="mp-fc-${key}">FC: ${fc}%</div>
+    </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+function updateFCPreview(key) {
+  const price = parseFloat(document.getElementById('mp-price-'+key)?.value)||1;
+  const cost  = parseFloat(document.getElementById('mp-cost-'+key)?.value)||0;
+  const fc = ((cost/price)*100).toFixed(1);
+  const fcColor = parseFloat(fc)<=28?'var(--teal)':parseFloat(fc)<=33?'var(--amber)':'var(--red)';
+  const el = document.getElementById('mp-fc-'+key);
+  if(el){ el.textContent='FC: '+fc+'%'; el.style.color=fcColor; }
+}
+
+function saveMenuPrices() {
+  const ov = {};
+  Object.keys(MENU_PRICES).forEach(key => {
+    const price = parseFloat(document.getElementById('mp-price-'+key)?.value);
+    const cost  = parseFloat(document.getElementById('mp-cost-'+key)?.value);
+    if (!isNaN(price)) { if(!ov[key])ov[key]={}; ov[key].price=price; MENU_PRICES[key].price=price; }
+    if (!isNaN(cost))  { if(!ov[key])ov[key]={}; ov[key].cost=cost;   MENU_PRICES[key].cost=cost; }
+  });
+  saveMenuPriceOverrides(ov);
+  alert('✅ Menu prices saved! Food Cost tab will reflect changes.');
+}
+
+function resetMenuPrices() {
+  if (!confirm('Reset all menu prices to original values?')) return;
+  localStorage.removeItem(MENU_PRICE_OVERRIDES_KEY);
+  buildAdminMenuPrices();
+}
+
+// Apply menu price overrides on startup
+(function applyMenuPriceOverrides() {
+  const ov = getMenuPriceOverrides();
+  Object.entries(ov).forEach(([key, vals]) => {
+    if (MENU_PRICES[key]) {
+      if (vals.price !== undefined) MENU_PRICES[key].price = vals.price;
+      if (vals.cost  !== undefined) MENU_PRICES[key].cost  = vals.cost;
+    }
+  });
+})();
+
+// ── Cheney Price Editor ──
+function buildAdminCheneyPrices() {
+  const ov = JSON.parse(localStorage.getItem(CHENEY_PRICE_OVERRIDES_KEY)||'{}');
+  const grid = document.getElementById('admin-cheney-grid');
+  let html = '';
+  Object.entries(CHENEY_CATALOG).forEach(([cat, catData]) => {
+    html += `<div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px">${catData.label}</div>`;
+    catData.items.forEach(item => {
+      const price = ov[item.code] !== undefined ? ov[item.code] : item.price;
+      html += `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)">
+        <div style="flex:1;font-size:12px;color:var(--text)">[${item.code}] ${item.name}</div>
+        <div style="font-size:11px;color:var(--text3)">${item.unit}</div>
+        <div style="display:flex;align-items:center;gap:4px">
+          <span style="font-size:12px;color:var(--text3)">$</span>
+          <input type="number" id="chp-${item.code}" value="${price}" min="0" step="0.01"
+            style="width:72px;padding:5px 7px;border:0.5px solid var(--border2);border-radius:6px;font-family:var(--mono);font-size:12px;text-align:right;background:var(--surface2);outline:none">
+        </div>
+      </div>`;
+    });
+  });
+  grid.innerHTML = html;
+}
+
+function saveCheneyPrices() {
+  const ov = {};
+  Object.values(CHENEY_CATALOG).forEach(catData => {
+    catData.items.forEach(item => {
+      const inp = document.getElementById('chp-'+item.code);
+      if (inp) {
+        const val = parseFloat(inp.value);
+        if (!isNaN(val)) { ov[item.code] = val; item.price = val; }
+      }
+    });
+  });
+  localStorage.setItem(CHENEY_PRICE_OVERRIDES_KEY, JSON.stringify(ov));
+  alert('✅ Cheney prices saved! Cheney Order tab will reflect changes.');
+}
+
+function resetCheneyPrices() {
+  if (!confirm('Reset all Cheney prices to original values?')) return;
+  localStorage.removeItem(CHENEY_PRICE_OVERRIDES_KEY);
+  buildAdminCheneyPrices();
+}
+
+// Apply Cheney price overrides on startup
+(function applyCheneyPriceOverrides() {
+  const ov = JSON.parse(localStorage.getItem(CHENEY_PRICE_OVERRIDES_KEY)||'{}');
+  Object.values(CHENEY_CATALOG).forEach(catData => {
+    catData.items.forEach(item => {
+      if (ov[item.code] !== undefined) item.price = ov[item.code];
+    });
+  });
+})();
+
+// Check admin session on tab open
+const _origShowTab = showTab;
+function showTab(tab, btn) {
+  _origShowTab(tab, btn);
+  if (tab === 'admin') {
+    const session = localStorage.getItem(ADMIN_SESSION_KEY);
+    if (session === new Date().toDateString()) {
+      document.getElementById('admin-login').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      buildAdminRecipes();
+      buildAdminMenuPrices();
+      buildAdminCheneyPrices();
+    } else {
+      document.getElementById('admin-login').style.display = 'block';
+      document.getElementById('admin-panel').style.display = 'none';
+    }
+  }
+}
+</script>
+</body>
+</html>
+<script>
+// FILE UPLOAD SUPPORT
+(function(){
+
+document.addEventListener('DOMContentLoaded', function(){
+  // Load SheetJS immediately
+  if (!window.XLSX) {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    document.head.appendChild(s);
+  }
+
+  const tabs = document.querySelector('.tabs');
+  const uploadBar = document.createElement('div');
+  uploadBar.style.cssText = 'display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap';
+  uploadBar.innerHTML = `
+    <div style="flex:1;min-width:200px;background:var(--surface);border:2px dashed var(--teal-dim);border-radius:var(--radius-sm);padding:14px 16px;cursor:pointer;transition:all .2s" onclick="document.getElementById('file-proy').click()" id="drop-proy">
+      <div style="font-size:11px;font-weight:600;color:var(--teal);margin-bottom:3px">📊 PROYECCIÓN</div>
+      <div style="font-size:12px;color:var(--text2)" id="lbl-proy">Subir plantilla .xlsx</div>
+      <input type="file" id="file-proy" accept=".csv,.xlsx,.xls" style="display:none" onchange="loadFile(this,'proy')">
+    </div>
+    <div style="flex:1;min-width:200px;background:var(--surface);border:2px dashed var(--amber-dim);border-radius:var(--radius-sm);padding:14px 16px;cursor:pointer;transition:all .2s" onclick="document.getElementById('file-inv').click()" id="drop-inv">
+      <div style="font-size:11px;font-weight:600;color:var(--amber);margin-bottom:3px">📦 INVENTARIO</div>
+      <div style="font-size:12px;color:var(--text2)" id="lbl-inv">Subir plantilla .xlsx</div>
+      <input type="file" id="file-inv" accept=".csv,.xlsx,.xls" style="display:none" onchange="loadFile(this,'inv')">
+    </div>`;
+  tabs.parentNode.insertBefore(uploadBar, tabs);
+});
+
+window.loadFile = function(input, type) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const waitForXLSX = (cb) => {
+    if (window.XLSX) { cb(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = cb;
+    document.head.appendChild(s);
+  };
+
+  waitForXLSX(() => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const wb = XLSX.read(data, {type:'array'});
+        // Use first sheet
+        const wsName = wb.SheetNames[0];
+        const ws = wb.Sheets[wsName];
+        // Convert to array of arrays
+        const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+        parseRows(rows, type, file.name);
+      } catch(err) {
+        showMsg(type, '❌ Error leyendo archivo: ' + err.message, true);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  });
+};
+
+function parseRows(rows, type, fname) {
+  let loaded = 0;
+  window._inventario = window._inventario || {};
+
+  // Valid keys for each type
+  const menuKeys = new Set(['empanadas','onion_rings','pap_pesto','papas_bruder','croquetas','hummus',
+    'drunken','wings','pork_ceviche','eggplant','soup','insalatta_pollo','insalatta_salmon',
+    'insalatta_veggie','salmon','dipsy','chimi_steak','mixed_grill','branzino','vegan',
+    'three_pep','crispy_chk','bacon_cheese','blue_cheese','tropical','pepperoni','bruder_pizza',
+    'hawaiian','tomato_pesto','mini_burger','nuggets','mini_pizza']);
+
+  const invKeys = new Set(['aji_criollo','onion_ring_sauce','blue_cheese_sauce','aceite_verde','hummus_base',
+    'camote_mousse','pico_gallo','barley','croqueta_kale','pickled_eggplant','pesto_tomato_sauce',
+    'pesto_tomato','goat_cheese_rounds','vinagreta','pure_papa','demiglace','three_pep_sauce','red_onion_jam',
+    'coleslaw','aioli_cilantro','basil_mayo','pizza_dough','pollo_marinado','chimichurri_mayo',
+    'pork_belly_cooked','chorizo_colombiano','alitas_precocidas','arroz','salsa_agridulce',
+    'marinated_mushrooms','crispy_onions','pickled_beet','guacamole_base']);
+
+  const validKeys = type === 'proy' ? menuKeys : invKeys;
+
+  function parseQty(raw) {
+    if (raw === null || raw === undefined || raw === '') return 0;
+    const str = String(raw).trim();
+    // Handle Excel formulas that weren't evaluated
+    if (str.startsWith('=')) {
+      try {
+        // Safe eval for simple math formulas
+        const expr = str.substring(1).replace(/[^0-9+\-*/().]/g, '');
+        return parseFloat(Function('"use strict"; return (' + expr + ')')()) || 0;
+      } catch { return 0; }
+    }
+    return parseFloat(str.replace(',', '.')) || 0;
+  }
+
+  for (const row of rows) {
+    if (!row || row.length === 0) continue;
+    const keyRaw = String(row[0] || '').trim();
+    if (!keyRaw || !validKeys.has(keyRaw)) continue;
+
+    const qty = parseQty(row.length > 4 ? row[4] : 0);
+
+    if (type === 'proy') {
+      const inp = document.getElementById('inp-' + keyRaw);
+      if (inp) {
+        inp.value = qty;
+        savedValues[keyRaw] = qty;
+        loaded++;
+      }
+    } else {
+      window._inventario[keyRaw] = qty;
+      loaded++;
+    }
+  }
+
+  if (loaded > 0) {
+    showMsg(type, `✓ ${loaded} ${type==='proy'?'platos':'bases'} cargados de "${fname}"`, false);
+  } else {
+    showMsg(type, '❌ No se reconocieron datos. Verificar que la columna A no fue modificada.', true);
+  }
+}
+
+function showMsg(type, msg, isError) {
+  const lbl = document.getElementById('lbl-' + type);
+  const drop = document.getElementById('drop-' + type);
+  if (lbl) lbl.textContent = msg;
+  if (drop) {
+    const color = isError ? 'var(--red)' : (type==='proy' ? 'var(--teal)' : 'var(--amber)');
+    const bg = isError ? 'var(--red-bg)' : (type==='proy' ? 'var(--teal-bg)' : 'var(--amber-bg)');
+    drop.style.borderColor = color;
+    drop.style.background = bg;
+  }
+}
+
+})();
+</script>
